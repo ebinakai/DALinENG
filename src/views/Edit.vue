@@ -4,15 +4,15 @@
       <form action="" method="post">
         <div class="form-group">
           <label for="title">TITLE</label>
-          <input class="form-control" type="text" name id="title" placeholder="Title" :value="content.title">
+          <input class="form-control" type="text" name id="title" placeholder="Title" v-model="content.title">
         </div>
         <div class="form-group">
           <label for="text">CONTENT</label>
-          <textarea class="form-control" name="text" id="text" rows="40" spellcheck="false">{{ content.text }}</textarea>
+          <textarea class="form-control" name="text" id="text" rows="40" spellcheck="false" placeholder="contents...">{{ content.text }}</textarea>
         </div>
         <div>
           <button @click="back" class="btn btn-lg btn-secondary px-5 py-3 d-inline-block">CANCEL</button>
-          <button @click="save" class="btn btn-lg btn-primary px-5 py-3 ml-5 d-inline-block">SAVE</button>
+          <button @click="save" class="btn btn-lg btn-primary px-5 py-3 ml-5 d-inline-block" type="submit">SAVE</button>
         </div>
       </form>
     </div>
@@ -34,6 +34,17 @@
       socket: io("http://localhost:3001", {}),
     }),
     created() {
+      if ( this.id == -1) {
+        this.socket.emit("GET_NEW_ID");
+      } else {
+        this.socket.emit("GET_DATA_BY_ID", this.id);
+      }
+
+      this.socket.on('NEW_ID', (id) => {
+        this.content.id = id;
+        this.content.vol = this.$route.query.vol;
+      });
+
       this.socket.on('DATA_BY_ID', (data) => {
         Object.keys(this.content).forEach((key) => {
           this.content[key] = data[key];
@@ -45,7 +56,6 @@
           this.back();
         }
       });
-      this.socket.emit("GET_DATA_BY_ID", this.id);
     },
     methods: {
       save(e) {
@@ -57,8 +67,12 @@
       back(e = undefined) {
         if ( e !== undefined) {
           e.preventDefault()
+          if ( this.id == -1 ) {
+            window.location.href = "/encore/" + this.content.vol;
+            return;
+          }
         }
-        window.location.href = "/section/" + this.id;
+        window.location.href = "/section/" + this.content.id;
       },  
     },
     watch: {

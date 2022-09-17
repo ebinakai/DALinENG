@@ -6,7 +6,7 @@
       </div>
       <section class="mb-5 fadein" v-for="content in contents">
         <router-link 
-          class="disk rounded-circle d-flex flex-column align-items-center justify-content-center p-3 btn"
+          class="disk rounded-circle d-flex flex-column align-items-center justify-content-center p-4 btn"
           :to="{ path: '/section/' + content.id }"
           >
           <h2>
@@ -17,6 +17,16 @@
           <p class="mt-5 px-5">{{ content.text.substring(0, 300) + "..." }}</p>
         </router-link>
       </section>
+      <router-link 
+      class="btn-create btn btn-primary position-fixed rounded-pill px-4 py-3"
+      :to="{ 
+        path: '/edit/-1',
+        query: {vol: vol } }"
+        >
+        <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+        &nbsp;Create New
+      </router-link>
+      
     </div>
   </main>
 </template>
@@ -52,8 +62,17 @@
               $(this).addClass('scrollin');
           }
         });
-      }
+      },
+      createNew() {
+        window.location.href = "/edit/?vol=" + this.vol;
+      },
     },
+    watch: {
+      vol(newVal) {
+        this.contents.splice(0);
+        this.socket.emit("GET_DATA_BY_VOL", newVal);
+      }
+    }
   };
 </script>
 
@@ -91,6 +110,12 @@
   .disk p, 
   .disk h2 {
     text-shadow: 0 0 10px #888;
+  }
+
+  .btn-create {
+    right: 40px;
+    bottom: 30px;
+    font-size: 21px;
   }
 
   @media screen and (max-width: 1040px) {
