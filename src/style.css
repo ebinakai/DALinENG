@@ -5,9 +5,9 @@
   line-height: 24px;
   font-weight: 400;
 
-  color-scheme: light dark;
+  /* color-scheme: light dark; */
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -69,7 +69,27 @@ button:focus-visible {
 }
 
 #app {
-  /* text-align: center; */
+  text-align: center;
+}
+
+.wrapper {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 0 20px;
+  gap: 2%;
+}
+
+/* 画面外にいる状態 */
+.fadein {
+  opacity : 0.1;
+  transform : translate(0, 50px);
+  transition : 1s;
+}
+
+/* 画面内に入った状態 */
+.fadein.scrollin {
+  opacity : 1;
+  transform : translate(0, 0);
 }
 
 @media (prefers-color-scheme: light) {
