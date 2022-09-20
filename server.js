@@ -9,14 +9,20 @@ const server = app.listen(3001, function() {
 
 const io = require("socket.io")(server, {
   cors: {
-    origins: ["http://localhost:5173/"],
+    origins: ["http://192.168.68.50:8080/"],
     methods: ["GET", "POST"],
   },
 });
 
+// const io = require("socket.io")(server, {
+//   cors: {
+//     origin: '*',
+//   },
+// });
+
 io.on("connection", (socket) => {
   // ユニークなIDを取得
-  socket.on("GET_NEW_ID", function() {
+  socket.on("GET_NEW_ID", (callback) => {
     let newId = 1;
     while( true ) {
       if ( json.filter((data) => {return data.id == newId}).length === 0 ) {
@@ -24,27 +30,33 @@ io.on("connection", (socket) => {
       }
       newId ++;
     }
-    io.emit("NEW_ID", newId);
+    callback({ NEW_ID: newId });
+    // io.emit("NEW_ID", newId);
     LogThrow([{title: newId}], "new ID is");
   });
 
   // IDで検索
-  socket.on("GET_DATA_BY_ID", function(id) {
-    const sendData = json.filter((data) => {return data.id == id});
-    io.emit("DATA_BY_ID", ...sendData);
-    LogThrow(sendData, "sent data");
+  socket.on("GET_DATA_BY_ID", (id, callback) => {
+    const sendData = json.filter((data) => {return data.id == id})[0];
+    callback({ DATA_BY_ID: sendData });
+    LogThrow([sendData], "sent data");
   });
 
   // Vol.で検索
-  socket.on("GET_DATA_BY_VOL", function(vol) {
-    console.log(vol);
+  socket.on("GET_DATA_BY_VOL", (vol, callback) => {
     const sendData = json.filter((data) => {return data.vol == vol});
-    io.emit("DATA_BY_VOL", sendData);
+    callback({ DATA_BY_VOL: sendData });
     LogThrow(sendData, "sent data");
   });
 
+  // データをダウンロード
+  socket.on("DOWNLOAD_ALL_DATA", () => {
+    io.emit("ALL_DATA", json);
+    console.log("Download all data")
+  });
+
   // 書き込み
-  socket.on("SET_DATA_BY_ID", function(editedItem) {
+  socket.on("SET_DATA_BY_ID", (editedItem, callback) => {
     const jsonItem = json[json.indexOf(...json.filter((item) => {return item.id == editedItem.id}))];
     
     if (jsonItem === undefined) {
@@ -56,8 +68,18 @@ io.on("connection", (socket) => {
     }
 
     fs.writeFileSync("./public/database/data.json", JSON.stringify(json, null, ' '));
-    io.emit("SET_DATA_BY_ID_COMPLETED", true);
-    LogThrow([editedItem], "save data")
+    callback({ status: true });
+    LogThrow([editedItem], "save data");
+  });
+
+  // 削除
+  socket.on("DELETE_DATA_BY_ID", (id, callback) => {
+
+    const index = json.indexOf(...json.filter((item) => {return item.id == id}));
+    console.log(json.splice(index, 1));
+    fs.writeFileSync("./public/database/data.json", JSON.stringify(json, null, ' '));
+    callback({ status: true });
+    console.log("delete data id." + id);
   });
 
 });

@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Encore from '../views/Encore.vue'
 import Section from '../views/Section.vue'
 import Edit from '../views/Edit.vue'
+import ControlPanel from '../views/ControlPanel.vue'
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     name: 'Edit',
     component: Edit,
     props: true,
+  },
+  {
+    path: '/admin',
+    name: 'ControlPanel',
+    component: ControlPanel,
   },
 ]
 

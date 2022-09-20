@@ -1,9 +1,9 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mx-4 pt-3">
+    <nav class="navbar navbar-expand-lg navbar-light mx-4 pt-3">
       <a class="navbar-brand d-flex" href="/">
         <img src="/images/ratatoskr.webp" width="60" height="60" class="d-inline-block align-top" alt="">
-        <h1 class="ml-2">DAL Encore in ENG</h1>
+        <h1 class="ml-2">DAL ENCORE in ENG</h1>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -28,6 +28,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Create new Article</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">Control Panel</a>
           </li>
         </ul>
       </div>

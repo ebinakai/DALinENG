@@ -6,8 +6,14 @@
           <h2 class="mb-5">{{ content.title }}</h2>
           <p v-for="p in content.text.split('\n\n')">{{ p }}</p>
         </div>
-        <div class="btn-box">
-          <button class="btn-edit btn btn-primary rounded-circle" @click="goEditPage">Edit</button>
+        <div class="text-right">
+          <router-link 
+            class="btn btn-primary rounded-pill px-4 py-3"
+            :to="{ path: '/edit/' + id }"
+            >
+            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+            &nbsp;Edit
+          </router-link>
         </div>
       </div>
     </div>
@@ -26,16 +32,15 @@
         id: 0, 
         vol: 0,
       },
-      socket: io("http://localhost:3001", {}),
+      socket: io("http://localhost:3001"),
     }),
     created() {
-      this.socket.on('DATA_BY_ID', (data) => {
+      this.socket.emit("GET_DATA_BY_ID", this.id, (response) => {
         Object.keys(this.content).forEach((key) => {
-          this.content[key] = data[key];
+          this.content[key] = response.DATA_BY_ID[key];
         });
         setTimeout(this.fadeIn);
       });
-      this.socket.emit("GET_DATA_BY_ID", this.id);
     },
     mounted() {
       $(window).scroll(this.fadeIn);

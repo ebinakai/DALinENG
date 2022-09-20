@@ -4,7 +4,7 @@
       <div>
         <p class="mb-5">here is in the book vol.{{ vol }}</p>
       </div>
-      <section class="mb-5 fadein" v-for="content in contents">
+      <section class="mb-5 fadein d-flex align-items-center justify-content-around" v-for="content in contents">
         <router-link 
           class="disk rounded-circle d-flex flex-column align-items-center justify-content-center p-4 btn"
           :to="{ path: '/section/' + content.id }"
@@ -16,9 +16,13 @@
           </h2>
           <p class="mt-5 px-5">{{ content.text.substring(0, 300) + "..." }}</p>
         </router-link>
+        <pixel-charactor class="res-hidden" />
       </section>
+
+      <h2 class="mb-5" v-if="contents.length === 0">No article yet...</h2>
+
       <router-link 
-      class="btn-create btn btn-primary position-fixed rounded-pill px-4 py-3"
+      class="btn-create btn btn-primary rounded-pill px-4 py-3"
       :to="{ 
         path: '/edit/-1',
         query: {vol: vol } }"
@@ -32,22 +36,20 @@
 </template>
 
 <script>
+  import PixelCharactor from '../components/PixelCharctor.vue';
   import io from "socket.io-client";
   export default {
     name: "Encore",
     props: ['vol'],
+    components: {
+      PixelCharactor
+    },
     data: () => ({
       contents: [],
-      socket: io("http://localhost:3001", {}),
+      socket: io("http://localhost:3001"),
     }),
     created() {
-      this.socket.on('DATA_BY_VOL', (data) => {
-        data.forEach(content => {
-          this.contents.push(content);
-        });
-        setTimeout(this.fadeIn);
-      });
-      this.socket.emit("GET_DATA_BY_VOL", this.vol);
+      this.socket.emit("GET_DATA_BY_VOL", this.vol, this.getData);
     },
     mounted() {
       $(window).scroll(this.fadeIn);
@@ -66,11 +68,17 @@
       createNew() {
         window.location.href = "/edit/?vol=" + this.vol;
       },
+      getData(response) {
+        response.DATA_BY_VOL.forEach(content => {
+          this.contents.push(content);
+        });
+        setTimeout(this.fadeIn);
+      }
     },
     watch: {
       vol(newVal) {
         this.contents.splice(0);
-        this.socket.emit("GET_DATA_BY_VOL", newVal);
+        this.socket.emit("GET_DATA_BY_VOL", newVal, this.getData);
       }
     }
   };
@@ -87,10 +95,8 @@
     width: 600px;
     height: 600px;
     background-color: #00A495;
-    position: absolute;
     color: white;
     cursor: pointer;
-    /* transform: translateY(200px); */
     transition: .2s;
   }
 
@@ -98,13 +104,13 @@
     background-color: #00beae;
     transform:scale(1.1);
   }
-  
-  section:nth-child(even) .disk{
-    left: 10%;
-  }	
 
-  section:nth-child(odd) .disk{
-    right: 10%;
+  section:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+  
+  .pixel {
+    margin: 0 20px;
   }
 
   .disk p, 
@@ -113,8 +119,9 @@
   }
 
   .btn-create {
+    position: fixed;
     right: 40px;
-    bottom: 30px;
+    bottom: 130px;
     font-size: 21px;
   }
 
@@ -124,9 +131,8 @@
     }
 
     .disk {
-      position: static;
-      width: 480px;
-      height: 480px;
+      width: 310px;
+      height: 310px;
       margin: 0 auto;
     }
   
@@ -136,6 +142,13 @@
   }
 
   @media screen and (max-width: 550px) {
+
+    .btn-create {
+      position: static;
+      margin-bottom: 20px;
+
+    }
+
     section {
       height: 280px;
     }

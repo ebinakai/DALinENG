@@ -1,6 +1,6 @@
 <template>
-  <main>
-    <div class="wrapper d-flex flex-wrap">
+  <main class="pb-5">
+    <div class="wrapper d-flex flex-wrap pt-5">
       <div class="card-box mb-5 p-0 fadein" v-for="content in contents">
         <router-link 
           class="card rounded shadow-lg p-0 btn"
@@ -13,13 +13,20 @@
         </router-link>
       </div>
     </div>
+    <div class="d-flex justify-content-around">
+      <pixel-charactor />
+      <pixel-charactor class="res-hidden" />
+    </div>
   </main>
 </template>
 
 <script>
+  import PixelCharactor from '../components/PixelCharctor.vue';
   export default {
     name: "Home",
-    components: {},
+    components: {
+      PixelCharactor
+    },
     data: () => ({
       contents: [
         {vol: 1},
@@ -56,14 +63,6 @@
 </script>
 
 <style>
-  /* 
-  #010326
-  #393E59
-  #F0F2F2
-  #6FBFBF
-  #82D9D9
-  */
-
   .card-box {
     width: 32%;
   }
@@ -100,6 +99,11 @@
     .card-box {
       width: 100%;
       margin: 0 auto;
+    }
+  }
+  @media screen and (max-width: 550px) {
+    .res-hidden {
+      display: none;
     }
   }
 </style>

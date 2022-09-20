@@ -1,6 +1,6 @@
 {
   "name": "dalineng",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "commonjs",
   "scripts": {
@@ -14,10 +14,13 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/vue-fontawesome": "^3.0.1",
+    "blob": "^0.1.0",
     "cros": "^1.0.1",
     "express": "^4.18.1",
     "express-generator": "^4.16.1",
+    "filesaver": "^0.0.13",
     "jquery": "^3.6.1",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "request": "^2.88.2",
