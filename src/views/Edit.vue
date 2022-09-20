@@ -3,12 +3,10 @@
     <div class="wrapper">
       <form>
         <div class="form-group">
-          <label for="title">TITLE</label>
           <input class="form-control" type="text" name id="title" placeholder="Title" v-model="content.title">
         </div>
         <div class="form-group">
-          <label for="text">CONTENT</label>
-          <textarea class="form-control" name="text" id="text" rows="40" spellcheck="false" placeholder="contents...">{{ content.text }}</textarea>
+          <textarea class="form-control py-3" name="text" id="text" rows="40" spellcheck="false" placeholder="contents..." v-model="text"></textarea>
         </div>
         <div class="edit-btn-box mb-5">
           <button @click="back" class="btn-cancel btn btn-lg btn-secondary rounded-pill px-5 py-3 d-inline-block">
@@ -35,27 +33,26 @@
     name: "Edit",
     props: ['id'],
     data: () => ({
+      text: "",
       content: {
         title: "",
         text: "",
-        id: 0,
+        id: -1,
         vol: 0,
       },
       socket: io("http://localhost:3001"),
     }),
     created() {
-      if ( this.id == -1) {
+      if ( this.id == -1 ) {
         // 新規データを作成
-        this.socket.emit("GET_NEW_ID", (response) => {
-          this.content.id = response.NEW_ID;
-          this.content.vol = this.$route.query.vol;
-        });
+        this.content.vol = this.$route.query.vol;
       } else {
         // 既存データを編集
         this.socket.emit("GET_DATA_BY_ID", this.id, (response) => {
           Object.keys(this.content).forEach((key) => {
             this.content[key] = response.DATA_BY_ID[key];
           });
+          this.text = this.content.text;
           setTimeout(this.fadeIn);
         });
       }
@@ -66,11 +63,17 @@
         this.content.text = $("#text")[0].value;
 
         // 編集データを送信
-        this.socket.emit("SET_DATA_BY_ID", this.content, (response) => {
-          if ( response.status ) {
-            this.back();
-          }
-        });
+        if( this.id == -1 ) {
+          this.socket.emit("CREATE_DATA", this.content, (response) => {
+            if ( response.status ) {
+              this.back();
+            }
+          });
+        } else {
+          this.socket.emit("SET_DATA", this.content, (response) => {
+            if ( response.status )  this.back();
+          });
+        }
       },
       trash(e) {
         e.preventDefault();
@@ -86,16 +89,20 @@
       back(e = undefined) {
         if ( e !== undefined ) {
           e.preventDefault();
-          if ( this.id == -1 ) {
-            window.location.href = "/encore/" + this.content.vol;
-            return;
-          }
+        }
+        if ( this.id == -1 ) {
+          console.log("/encore/" + this.content.vol)
+          window.location.href = "/encore/" + this.content.vol;
+          return;
         }
         window.location.href = "/section/" + this.content.id;
       },  
     },
     watch: {
-      
+      text(Val, oldVal) {
+        this.text = Val.replace("--", "—");
+        this.content.text = this.text;
+      }
     }
   };
 </script>
@@ -107,7 +114,7 @@
 
   textarea.form-control {
     resize: none;
-    height: 70vh;
+    height: 75vh;
   }
 
   .form-group label {

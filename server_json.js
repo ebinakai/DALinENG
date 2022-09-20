@@ -14,12 +14,6 @@ const io = require("socket.io")(server, {
   },
 });
 
-// const io = require("socket.io")(server, {
-//   cors: {
-//     origin: '*',
-//   },
-// });
-
 io.on("connection", (socket) => {
   // ユニークなIDを取得
   socket.on("GET_NEW_ID", (callback) => {
