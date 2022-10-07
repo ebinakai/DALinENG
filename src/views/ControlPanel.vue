@@ -20,35 +20,30 @@
     data: () => ({
       socket: io("http://localhost:3001", {}),
     }),
-    mounted() {
-      this.socket.on("ALL_DATA", (json)=> {
-
-        let zip = new jszip;
-
-        json.forEach((content) => {
-          // txt を作成
-          let outData = "Vol." + content.vol + "\n";
-          outData += content.title + "\n\n";
-          outData += content.text + "\n\n\n\n";
-
-          // zip にファイルを追加
-          filename = "Vol" + content.vol + " " + content.title.replace(' ', '') + ".txt";
-          zip.folder('DATE-A-LIVE-ENCORE-ENGLISH').file(filename, outData);
-        });
-
-        // zip をまとめる -> ダウンロード
-        zip.generateAsync({type:'blob'}).then(function(blob){
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = 'DATE-A-LIVE-ENCORE-ENGLISH.zip';
-          link.click();
-        })
-
-      });
-    },
     methods: {
       DownloadAllData() {
-        this.socket.emit("DOWNLOAD_ALL_DATA");
+        this.socket.emit("DOWNLOAD_ALL_DATA", (response) => {
+
+          let zip = new jszip;
+          
+          response["json"].forEach((content) => {
+            // txt を作成
+            let outData = "Vol." + content.vol + "\n" + content.title + "\n\n" + content.text + "\n\n\n\n";
+
+            // zip にファイルを追加
+            let filename = "Vol" + content.vol + " " + content.title + ".txt";
+            zip.folder('DATE-A-LIVE-ENCORE-ENGLISH').file(filename, outData);
+          });
+
+          // zip をまとめる -> ダウンロード
+          zip.generateAsync({type:'blob'}).then(function(blob){
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'DATE-A-LIVE-ENCORE-ENGLISH.zip';
+            link.click();
+          })
+
+        });
       },
     },
   };

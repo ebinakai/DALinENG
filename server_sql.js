@@ -1,9 +1,7 @@
 const express = require("express");
 const app = express();
-const fs = require("fs");
 const mysql = require('mysql2');
 const config  = require('./public/javascript/db_config.js');
-let json = JSON.parse(fs.readFileSync("./public/database/data.json"));
 
 const server = app.listen(3001, function() {
   console.log("server running on port 3001");
@@ -114,16 +112,18 @@ io.on("connection", (socket) => {
   });
 
   // データをダウンロード
-  socket.on("DOWNLOAD_ALL_DATA", () => {
-    io.emit("ALL_DATA", json);
-    console.log("Download all data")
+  socket.on("DOWNLOAD_ALL_DATA", (callback) => {
+    getAllData().then( json => {
+      callback({ json: json });
+      console.log("Download all data")
+    } )
   });
 
   // 書き込み
   socket.on("SET_DATA", (content, callback) => {
     updateData(content).then( state => {
       callback({ status: state });
-      LogThrow([content], "save data");
+      LogThrow([content], "save");
     } )
   });
 
@@ -131,7 +131,7 @@ io.on("connection", (socket) => {
   socket.on("CREATE_DATA", (content, callback) => {
     insertData(content).then( state => {
       callback({ status: state });
-      LogThrow([content], "save data");
+      LogThrow([content], "save");
     });
   });
 
@@ -139,7 +139,7 @@ io.on("connection", (socket) => {
   socket.on("DELETE_DATA_BY_ID", (id, callback) => {
     deleteData(id).then(state => {
       callback({ status: state });
-      console.log("delete data id." + id);
+      console.log("delete id." + id);
     });
   });
 

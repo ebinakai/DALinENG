@@ -28,7 +28,8 @@
 </template>
 
 <script>
-  import io from "socket.io-client";
+  import e from "cors";
+import io from "socket.io-client";
   export default {
     name: "Edit",
     props: ['id'],
@@ -56,27 +57,38 @@
           setTimeout(this.fadeIn);
         });
       }
+
+      // c-s shortcut
+      window.addEventListener("keyup", e => {
+        if( e.ctrlKey && e.key === "s" ) {
+            console.log(e.key)
+            this.save(undefined, false);
+        }
+      })
     },
     methods: {
-      save(e) {
-        e.preventDefault();
+      // 保存
+      save(e=undefined, flag=true) {
+        if ( e !== undefined )  e.preventDefault();
         this.content.text = $("#text")[0].value;
 
         // 編集データを送信
         if( this.id == -1 ) {
           this.socket.emit("CREATE_DATA", this.content, (response) => {
-            if ( response.status ) {
-              this.back();
-            }
+            if ( response.status && flag)  this.back();
           });
         } else {
           this.socket.emit("SET_DATA", this.content, (response) => {
-            if ( response.status )  this.back();
+            if ( response.status && flag)  this.back();
           });
         }
       },
+
+      // 削除
       trash(e) {
         e.preventDefault();
+
+        if ( !confirm("really delete this article?") ) return;
 
         // 削除するIDを送信
         this.socket.emit("DELETE_DATA_BY_ID", this.content.id, (response) => {
@@ -86,6 +98,8 @@
         });
 
       },
+
+      // 前ページに戻る
       back(e = undefined) {
         if ( e !== undefined ) {
           e.preventDefault();
@@ -98,6 +112,8 @@
         window.location.href = "/section/" + this.content.id;
       },  
     },
+
+    // 文字変換
     watch: {
       text(Val, oldVal) {
         this.text = Val.replace("--", "—");
