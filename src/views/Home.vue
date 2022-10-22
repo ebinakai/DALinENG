@@ -4,8 +4,8 @@
       <div class="card-box mb-5 p-0 fadein" v-for="content in contents">
         <router-link 
           class="card rounded shadow-lg p-0 btn"
-          :to="{path: '/encore/'+content.vol, }">
-          <div class="cover" :style="`background-image: url(/images/cover/cover-vol-${content.vol}.webp)`">
+          :to="{path: '/DALeng/encore/'+content.vol, }">
+          <div class="cover" :style="`background-image: url(/DALeng/images/cover/cover-vol-${content.vol}.webp)`">
           </div>  
           <div class="card-body">
             <h5 class="card-title mb-0">DATE A LIVE ENCORE Vol. {{ content.vol }}</h5>

@@ -9,7 +9,7 @@
         <div class="text-right">
           <router-link 
             class="btn btn-primary rounded-pill px-4 py-3"
-            :to="{ path: '/edit/' + id }"
+            :to="{ path: '/DALeng/edit/' + id }"
             >
             <font-awesome-icon icon="fa-solid fa-pen-to-square" />
             &nbsp;Edit
@@ -32,7 +32,7 @@
         id: 0, 
         vol: 0,
       },
-      socket: io("http://localhost:3001"),
+      socket: io("http://192.168.68.82:3001"),
     }),
     created() {
       this.socket.emit("GET_DATA_BY_ID", this.id, (response) => {
@@ -57,7 +57,7 @@
         });
       },
       goEditPage() {
-        window.location.href = "/edit/" + this.id;
+        window.location.href = "/DALeng/edit/" + this.id;
       },
     },
   };

@@ -18,7 +18,7 @@
               <router-link
                 class="dropdown-item"
                 v-for="content in contents"
-                :to="{ path: '/encore/' + content.vol }">
+                :to="{ path: '/DALeng/encore/' + content.vol }">
                 Vol.{{content.vol}}
               </router-link>
             </div>

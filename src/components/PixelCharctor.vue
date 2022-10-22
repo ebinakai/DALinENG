@@ -9,12 +9,12 @@
   export default {
     name: "Header",
     data: () => ({
-      charctorList: ["Origami", "Rinne", "Marina", "Yamai", "Maria", "Natsumi-adult", "Kurumi-casual", "Origami-robo", "Origami-maid", "Shido", "Kotori-casual", "Yoshino-casual", "Toka", "Yuzuru", "Yoshino", "Tenka", "Shiori", "Reine", "Origami-ast", "Natsumi", "Kurumi", "Miku", "Mana", "Kotori", "Kaguya"],
+      charctorList: ["origami","rinne","marina","yamai","maria","natsumi-adult","kurumi-casual","origami-robo","origami-maid","shido","kotori-casual","yoshino-casual","toka","yuzuru","yoshino","tenka","shiori","reine","origami-ast","natsumi","kurumi","miku","mana","kotori","kaguya"],
       path: "",
     }),
     mounted() {
       const index = Math.floor(Math.random() * this.charctorList.length);
-      this.path = `/images/pixel/${this.charctorList[index]}.webp`;
+      this.path = `/DALeng/images/pixel/${this.charctorList[index]}.webp`;
     },
   };
 </script>

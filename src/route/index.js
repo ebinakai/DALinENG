@@ -7,30 +7,30 @@ import ControlPanel from '../views/ControlPanel.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/DALeng/',
     name: 'Home',
     component: Home
   },
   {
-    path: '/encore/:vol',
+    path: '/DALeng/encore/:vol',
     name: 'Encore',
     component: Encore,
     props: true,
   },
   {
-    path: '/section/:id',
+    path: '/DALeng/section/:id',
     name: 'Section',
     component: Section,
     props: true,
   },
   {
-    path: '/edit/:id',
+    path: '/DALeng/edit/:id',
     name: 'Edit',
     component: Edit,
     props: true,
   },
   {
-    path: '/admin',
+    path: '/DALeng/admin',
     name: 'ControlPanel',
     component: ControlPanel,
   },

@@ -18,7 +18,7 @@
   export default {
     name: "ControlPanel",
     data: () => ({
-      socket: io("http://localhost:3001", {}),
+      socket: io("http://192.168.68.82:3001", {}),
     }),
     methods: {
       DownloadAllData() {

@@ -7,7 +7,7 @@
       <section class="mb-5 fadein d-flex align-items-center justify-content-around" v-for="content in contents">
         <router-link 
           class="disk rounded-circle d-flex flex-column align-items-center justify-content-center p-4 btn"
-          :to="{ path: '/section/' + content.id }"
+          :to="{ path: '/DALeng/section/' + content.id }"
           >
           <h2>
             <span class="d-inline-block" v-for="i in content.title.split(' ')">
@@ -24,7 +24,7 @@
       <router-link 
       class="btn-create btn btn-primary rounded-pill px-4 py-3"
       :to="{ 
-        path: '/edit/-1',
+        path: '/DALeng/edit/-1',
         query: {vol: vol } }"
         >
         <font-awesome-icon icon="fa-solid fa-pen-to-square" />
@@ -46,7 +46,7 @@
     },
     data: () => ({
       contents: [],
-      socket: io("http://localhost:3001"),
+      socket: io("http://192.168.68.82:3001"),
     }),
     created() {
       this.socket.emit("GET_DATA_BY_VOL", this.vol, this.getData);

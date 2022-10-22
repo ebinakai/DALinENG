@@ -41,7 +41,7 @@ import io from "socket.io-client";
         id: -1,
         vol: 0,
       },
-      socket: io("http://localhost:3001"),
+      socket: io("http://192.168.68.82:3001"),
     }),
     created() {
       if ( this.id == -1 ) {
@@ -93,7 +93,7 @@ import io from "socket.io-client";
         // 削除するIDを送信
         this.socket.emit("DELETE_DATA_BY_ID", this.content.id, (response) => {
           if ( response.status ) {
-            window.location.href = "/encore/" + this.content.vol;
+            window.location.href = "/DALeng/encore/" + this.content.vol;
           }
         });
 
@@ -105,11 +105,11 @@ import io from "socket.io-client";
           e.preventDefault();
         }
         if ( this.id == -1 ) {
-          console.log("/encore/" + this.content.vol)
-          window.location.href = "/encore/" + this.content.vol;
+          console.log("/DALeng/encore/" + this.content.vol)
+          window.location.href = "/DALeng/encore/" + this.content.vol;
           return;
         }
-        window.location.href = "/section/" + this.content.id;
+        window.location.href = "/DALeng/section/" + this.content.id;
       },  
     },
 
