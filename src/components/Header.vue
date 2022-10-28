@@ -17,9 +17,9 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link
                 class="dropdown-item"
-                v-for="content in contents"
-                :to="{ path: '/DALeng/encore/' + content.vol }">
-                Vol.{{content.vol}}
+                v-for="vol in vols"
+                :to="{ path: '/DALeng/encore/' + vol }">
+                Vol.{{ vol }}
               </router-link>
             </div>
           </li>
@@ -42,22 +42,8 @@
   export default {
     name: "Header",
     data: () => ({
-      contents: [
-        {vol: 1},
-        {vol: 2},
-        {vol: 3},
-        {vol: 4},
-        {vol: 5},
-        {vol: 6},
-        {vol: 7},
-        {vol: 8},
-        {vol: 9},
-        {vol: 10},
-        {vol: 11},
-      ],
+      vols: 11,
     }),
-    methods: {
-    },
   };
 </script>
 
