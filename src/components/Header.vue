@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav class="navbar navbar-expand-lg navbar-light mx-4 pt-3">
-      <a class="navbar-brand d-flex" href="/">
+      <a class="navbar-brand d-flex" href="/DALeng">
         <img src="/images/ratatoskr.webp" width="60" height="60" class="d-inline-block align-top" alt="">
         <h1 class="ml-2">DAL ENCORE in ENG</h1>
       </a>
@@ -17,9 +17,9 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link
                 class="dropdown-item"
-                v-for="content in contents"
-                :to="{ path: '/DALeng/encore/' + content.vol }">
-                Vol.{{content.vol}}
+                v-for="content in vol"
+                :to="{ path: '/DALeng/encore/' + content }">
+                Vol.{{content}}
               </router-link>
             </div>
           </li>
@@ -42,22 +42,8 @@
   export default {
     name: "Header",
     data: () => ({
-      contents: [
-        {vol: 1},
-        {vol: 2},
-        {vol: 3},
-        {vol: 4},
-        {vol: 5},
-        {vol: 6},
-        {vol: 7},
-        {vol: 8},
-        {vol: 9},
-        {vol: 10},
-        {vol: 11},
-      ],
+      vol: 11
     }),
-    methods: {
-    },
   };
 </script>
 
