@@ -28,8 +28,8 @@
 </template>
 
 <script>
-  import e from "cors";
-import io from "socket.io-client";
+  import io from "socket.io-client";
+  import store from '../store/index';
   export default {
     name: "Edit",
     props: ['id'],
@@ -41,7 +41,7 @@ import io from "socket.io-client";
         id: -1,
         vol: 0,
       },
-      socket: io("http://192.168.68.82:3001"),
+      socket: io(store.state.urlDb),
     }),
     created() {
       if ( this.id == -1 ) {

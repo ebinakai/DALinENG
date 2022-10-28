@@ -1,10 +1,12 @@
 <template>
   <header>
     <nav class="navbar navbar-expand-lg navbar-light mx-4 pt-3">
-      <a class="navbar-brand d-flex" href="/">
+      <router-link
+        class="navbar-brand d-flex" 
+        to="/DALeng/">
         <img src="/images/ratatoskr.webp" width="60" height="60" class="d-inline-block align-top" alt="">
         <h1 class="ml-2">DAL ENCORE in ENG</h1>
-      </a>
+      </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -24,13 +26,30 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#">Create new Vol</a>
+            <router-link 
+              class="nav-link disabled" 
+              to="/DALeng/">
+              Create new Vol
+            </router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#">Create new Article</a>
+            <router-link 
+              class="nav-link disabled" 
+              to="/DALeng/">
+              Create new Article
+            </router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/admin">Control Panel</a>
+            <router-link 
+              class="nav-link" 
+              to="/DALeng/admin">
+              Control Panel
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="logout()">
+              Logout
+            </a>
           </li>
         </ul>
       </div>
@@ -44,6 +63,15 @@
     data: () => ({
       vols: 11,
     }),
+    methods: {
+      logout () {
+        return this.$store.dispatch('logout')
+          .then(() => {
+            this.$router.push('/login')
+          })
+          .catch(error => { throw error })
+        }
+    }
   };
 </script>
 
@@ -52,6 +80,10 @@
     font-size: 34px;
     font-weight: bold;
     line-height: 60px;
+  }
+
+  a:hover {
+    cursor: pointer;
   }
 
   @media screen and (max-width: 550px) {

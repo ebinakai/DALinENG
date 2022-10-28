@@ -38,6 +38,7 @@
 <script>
   import PixelCharactor from '../components/PixelCharctor.vue';
   import io from "socket.io-client";
+  import store from '../store/index'
   export default {
     name: "Encore",
     props: ['vol'],
@@ -46,13 +47,14 @@
     },
     data: () => ({
       contents: [],
-      socket: io("http://192.168.68.82:3001"),
+      socket: io(store.state.urlDb),
     }),
     created() {
       this.socket.emit("GET_DATA_BY_VOL", this.vol, this.getData);
     },
     mounted() {
       $(window).scroll(this.fadeIn);
+      console.log(store.state.auth.token)
     },
     methods: {
       fadeIn(){

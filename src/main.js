@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import store from './store/index'
 import './style.css'
 import router from './route/index'
 import App from './App.vue'
@@ -18,4 +19,5 @@ library.add(faUserSecret, faPenToSquare, faFloppyDisk, faArrowLeft, faTrash)
 createApp(App)
 .component('font-awesome-icon', FontAwesomeIcon)
 .use(router)
+.use(store)
 .mount('#app')

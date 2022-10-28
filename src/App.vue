@@ -12,6 +12,6 @@
     components: {
       Header,
       Footer,
-    },
+    }
   }
 </script>
