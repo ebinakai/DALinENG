@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
-import Encore from '../views/Encore.vue'
+import Book from '../views/Book.vue'
 import Section from '../views/Section.vue'
 import Edit from '../views/Edit.vue'
 import ControlPanel from '../views/ControlPanel.vue'
@@ -9,7 +9,7 @@ import { authorizeToken } from './guards'
 
 const routes = [
   {
-    path: '/login/',
+    path: '/DALeng/login/',
     name: 'Login',
     component: Login
   },
@@ -20,9 +20,9 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/DALeng/encore/:vol',
-    name: 'Encore',
-    component: Encore,
+    path: '/DALeng/book/:vol',
+    name: 'Book',
+    component: Book,
     props: true,
     meta: { requiresAuth: true }
   },

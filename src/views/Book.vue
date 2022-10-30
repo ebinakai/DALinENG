@@ -54,7 +54,6 @@
     },
     mounted() {
       $(window).scroll(this.fadeIn);
-      console.log(store.state.auth.token)
     },
     methods: {
       fadeIn(){

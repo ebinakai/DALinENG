@@ -42,7 +42,6 @@ async function getVolData(vol) {
       resolve(results);
     });
   });
-  ;
 }
 
 // IDでデータベースから取得

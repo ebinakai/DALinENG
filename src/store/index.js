@@ -5,8 +5,7 @@ import mutations from "./modules/mutations"
 const store = new Vuex.Store({
     state: {
         auth: {
-            userId: null,
-            token: null,
+            token: sessionStorage.getItem('token'),
         },
         urlDb: "http://192.168.68.82:3001",
     },

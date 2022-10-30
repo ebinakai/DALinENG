@@ -61,7 +61,6 @@
       // c-s shortcut
       window.addEventListener("keyup", e => {
         if( e.ctrlKey && e.key === "s" ) {
-            console.log(e.key)
             this.save(undefined, false);
         }
       })
@@ -93,7 +92,7 @@
         // 削除するIDを送信
         this.socket.emit("DELETE_DATA_BY_ID", this.content.id, (response) => {
           if ( response.status ) {
-            window.location.href = "/DALeng/encore/" + this.content.vol;
+            window.location.href = "/DALeng/book/" + this.content.vol;
           }
         });
 
@@ -105,8 +104,7 @@
           e.preventDefault();
         }
         if ( this.id == -1 ) {
-          console.log("/DALeng/encore/" + this.content.vol)
-          window.location.href = "/DALeng/encore/" + this.content.vol;
+          window.location.href = "/DALeng/book/" + this.content.vol;
           return;
         }
         window.location.href = "/DALeng/section/" + this.content.id;

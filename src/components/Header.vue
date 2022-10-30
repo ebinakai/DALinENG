@@ -20,7 +20,7 @@
               <router-link
                 class="dropdown-item"
                 v-for="vol in vols"
-                :to="{ path: '/DALeng/encore/' + vol }">
+                :to="{ path: '/DALeng/book/' + vol }">
                 Vol.{{ vol }}
               </router-link>
             </div>
@@ -67,7 +67,7 @@
       logout () {
         return this.$store.dispatch('logout')
           .then(() => {
-            this.$router.push('/login')
+            this.$router.push('/DALeng/')
           })
           .catch(error => { throw error })
         }
@@ -76,6 +76,10 @@
 </script>
 
 <style>
+  header {
+    height: 100px;
+  }
+
   nav h1 {
     font-size: 34px;
     font-weight: bold;

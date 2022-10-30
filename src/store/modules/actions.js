@@ -3,19 +3,20 @@ import * as types from './mutation-types'
 
 export default {
   login({ commit }, data) {
-    return auth.login( data.user )
+    return auth.login( data )
       .then( res => {
-        localStorage.setItem("token", res.data.token)
-        commit(types.LOGIN, res.data)
+        sessionStorage.setItem("token", res.data.token);
+        commit(types.LOGIN, res.data);
+        return res;
       })
-      .catch( error => { throw error } )
+      .catch( error => error );
   },
   logout({ commit }) {
     return auth.logout()
       .then(() => {
-        localStorage.removeItem("token")
-        commit(types.LOGOUT, { token: null, userId: null })
+        sessionStorage.removeItem("token");
+        commit(types.LOGOUT, { token: null });
       })
-      .catch( error => { throw error } )
+      .catch( error => { throw error } );
   }
 }
