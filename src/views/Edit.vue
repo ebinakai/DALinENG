@@ -99,15 +99,15 @@
       },
 
       // 前ページに戻る
-      back(e = undefined) {
+      back(e) {
         if ( e !== undefined ) {
           e.preventDefault();
         }
         if ( this.id == -1 ) {
-          window.location.href = "/DALeng/book/" + this.content.vol;
+          this.$router.push("/DALeng/book/" + this.content.vol);
           return;
         }
-        window.location.href = "/DALeng/section/" + this.content.id;
+        this.$router.push("/DALeng/section/" + this.content.id);
       },  
     },
 
