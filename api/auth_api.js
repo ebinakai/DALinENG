@@ -1,4 +1,4 @@
-const config  = require('../public/javascript/db_config.js');
+const config  = require('./db_config');
 const mysql = require('mysql2');
 
 class authDB {
@@ -15,7 +15,7 @@ class authDB {
         console.log(err.stack);
         return;
       } else {
-        console.log("success");
+        console.log("connect success!");
       }
     });
   }

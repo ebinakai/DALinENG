@@ -67,7 +67,7 @@
       logout () {
         return this.$store.dispatch('logout')
           .then(() => {
-            this.$router.push('/DALeng/logout');
+            this.$router.push('/DALeng/login');
           })
           .catch(error => { throw error })
         }
