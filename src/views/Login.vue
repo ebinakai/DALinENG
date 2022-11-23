@@ -178,7 +178,6 @@
   }
 
   .login-card-footer button:hover {
-    transform: scale(.95);
     color: rgba(255, 255, 255, .6);
   }
 
