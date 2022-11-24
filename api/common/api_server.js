@@ -1,6 +1,6 @@
-const authApi = require("./api/auth_api");
-const noteApi = require("./api/note_api");
-const util = require("./api/util");
+const authApi = require("common/auth_api");
+const noteApi = require("common/note_api");
+const util = require("common/util");
 const express = require('express');
 const cors = require('cors');
 
