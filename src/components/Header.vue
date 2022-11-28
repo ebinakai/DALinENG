@@ -51,6 +51,11 @@
               Logout
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              Dash Board
+            </a>
+          </li>
         </ul>
       </div>
     </nav>

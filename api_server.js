@@ -1,6 +1,6 @@
-const authApi = require("common/auth_api");
-const noteApi = require("common/note_api");
-const util = require("common/util");
+const authApi = require("./api/auth_api");
+const noteApi = require("./api/note_api");
+const util = require("./api/util");
 const express = require('express');
 const cors = require('cors');
 
@@ -23,7 +23,7 @@ app.use(express.json());
 
 // ログイン
 app.post('/login', (req, res) => {
-  auth.getUser(req.body.username).then( results => {
+  auth.getUser( req.body.username ).then( results => {
     if ( results.length == 0 ) {
       res.status(301).send("No This User");
       return;
