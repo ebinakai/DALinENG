@@ -1,5 +1,6 @@
 const config  = require('./db_config');
 const mysql = require('mysql2');
+const util = require("./util");
 
 class authDB {
 
@@ -23,7 +24,7 @@ class authDB {
   // 新規ユーザーを作成
   async insertUser(userInfo) {
     return await new Promise((resolve, reject) => {
-      let password = getHash(userInfo.password)
+      let password = util.getHash(userInfo.password)
       this.conn.query(config.createUser, [userInfo.username, password], (error, results, fields) => {
         resolve(results);
       });

@@ -24,7 +24,7 @@ app.use(express.json());
 // ログイン
 app.post('/login', (req, res) => {
   auth.getUser( req.body.username ).then( results => {
-    if ( results.length == 0 ) {
+    if ( results == [] ) {
       res.status(301).send("No This User");
       return;
     }
