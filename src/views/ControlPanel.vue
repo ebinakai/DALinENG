@@ -29,7 +29,7 @@
           <div v-if="incorrect_pass" class="alert alert-danger">
             Please check your password
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-lg btn-primary">Submit</button>
         </form>
       </div>
     </div>

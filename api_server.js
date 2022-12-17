@@ -24,11 +24,15 @@ app.use(express.json());
 // ログイン
 app.post('/login', (req, res) => {
   auth.getUser( req.body.username ).then( results => {
-    if ( results == [] ) {
+    
+    if ( !Array.isArray(results) ) {
+      res.status(500).send("No return available value from SQL server...");
+    } else if ( results.length == 0 ) {
       res.status(301).send("No This User");
       return;
     }
-
+    
+    console.log(results);
     if ( results[0].password !== util.getHash(req.body.password) ) {
       res.status(302).send("The password is incorrect");
       return;
