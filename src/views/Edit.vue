@@ -92,7 +92,7 @@
         // 削除するIDを送信
         this.socket.emit("DELETE_DATA_BY_ID", this.content.id, (response) => {
           if ( response.status ) {
-            window.location.href = "/DALeng/book/" + this.content.vol;
+            window.location.href = "/book/" + this.content.vol;
           }
         });
 
@@ -104,10 +104,10 @@
           e.preventDefault();
         }
         if ( this.id == -1 ) {
-          this.$router.push("/DALeng/book/" + this.content.vol);
+          this.$router.push("/book/" + this.content.vol);
           return;
         }
-        this.$router.push("/DALeng/section/" + this.content.id);
+        this.$router.push("/section/" + this.content.id);
       },  
     },
 

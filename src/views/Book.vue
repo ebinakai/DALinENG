@@ -7,7 +7,7 @@
       <section class="mb-5 fadein d-flex align-items-center justify-content-around" v-for="content in contents">
         <router-link 
           class="disk rounded-circle d-flex flex-column align-items-center justify-content-center p-4 btn"
-          :to="{ path: '/DALeng/section/' + content.id }"
+          :to="{ path: '/section/' + content.id }"
           >
           <h2>
             <span class="d-inline-block" v-for="i in content.title.split(' ')">
@@ -24,7 +24,7 @@
       <router-link 
       class="btn-create btn btn-primary rounded-pill px-4 py-3"
       :to="{ 
-        path: '/DALeng/edit/-1',
+        path: '/edit/-1',
         query: {vol: vol } }"
         >
         <font-awesome-icon icon="fa-solid fa-pen-to-square" />

@@ -46,6 +46,7 @@
         setTimeout( () => {
           this.$store.dispatch("login", this.user)
             .then( res => {
+              console.debug(res);
               $(".submit-animation").removeClass("active");
 
               const status = ( res.response === undefined )? undefined : res.response.status;
@@ -57,7 +58,7 @@
               if ( this.$route.query.redirect !== undefined) {
                 this.$router.push(this.$route.query.redirect);
               } else {
-                this.$router.push("/DALeng/")
+                this.$router.push("/")
               }
             })
             .catch( error => { throw error } )

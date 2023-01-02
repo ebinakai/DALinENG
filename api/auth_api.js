@@ -16,7 +16,7 @@ class authDB {
         console.log(err.stack);
         return;
       } else {
-        console.log("connect success!");
+        console.log("Successfully connected auth SQL server!");
       }
     });
   }

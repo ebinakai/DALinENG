@@ -9,39 +9,39 @@ import { authorizeToken } from './guards'
 
 const routes = [
   {
-    path: '/DALeng/login/',
+    path: '/login/',
     name: 'Login',
     component: Login
   },
   {
-    path: '/DALeng/',
+    path: '/',
     name: 'Home',
     component: Home,
     meta: { requiresAuth: true }
   },
   {
-    path: '/DALeng/book/:vol',
+    path: '/book/:vol',
     name: 'Book',
     component: Book,
     props: true,
     meta: { requiresAuth: true }
   },
   {
-    path: '/DALeng/section/:id',
+    path: '/section/:id',
     name: 'Section',
     component: Section,
     props: true,
     meta: { requiresAuth: true }
   },
   {
-    path: '/DALeng/edit/:id',
+    path: '/edit/:id',
     name: 'Edit',
     component: Edit,
     props: true,
     meta: { requiresAuth: true }
   },
   {
-    path: '/DALeng/admin',
+    path: '/admin',
     name: 'ControlPanel',
     component: ControlPanel,
     meta: { requiresAuth: true }

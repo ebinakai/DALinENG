@@ -24,17 +24,25 @@ app.use(express.json());
 // ログイン
 app.post('/login', (req, res) => {
   auth.getUser( req.body.username ).then( results => {
+    console.log(results);
     
     if ( !Array.isArray(results) ) {
-      res.status(500).send("No return available value from SQL server...");
+      const msg = "No return available value from SQL server...";
+      res.status(500).send(msg);
+      console.debug(msg);
+      return;
     } else if ( results.length == 0 ) {
-      res.status(301).send("No This User");
+      const msg = "No This User";
+      res.status(301).send(msg);
+      console.debug(msg);
       return;
     }
     
     console.log(results);
     if ( results[0].password !== util.getHash(req.body.password) ) {
-      res.status(302).send("The password is incorrect");
+      msg = "The password is incorrect";
+      console.debug(msg);
+      res.status(302).send();
       return;
     }
     

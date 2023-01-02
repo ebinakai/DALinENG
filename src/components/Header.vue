@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-light mx-4 pt-3">
       <router-link
         class="navbar-brand d-flex" 
-        to="/DALeng/">
+        to="/">
         <img src="/images/ratatoskr.webp" width="60" height="60" class="d-inline-block align-top" alt="">
         <h1 class="ml-2">DAL ENCORE in ENG</h1>
       </router-link>
@@ -20,7 +20,7 @@
               <router-link
                 class="dropdown-item"
                 v-for="vol in vols"
-                :to="{ path: '/DALeng/book/' + vol }">
+                :to="{ path: '/book/' + vol }">
                 Vol.{{ vol }}
               </router-link>
             </div>
@@ -28,21 +28,21 @@
           <li class="nav-item">
             <router-link 
               class="nav-link disabled" 
-              to="/DALeng/">
+              to="/">
               Create new Vol
             </router-link>
           </li>
           <li class="nav-item">
             <router-link 
               class="nav-link disabled" 
-              to="/DALeng/">
+              to="/">
               Create new Article
             </router-link>
           </li>
           <li class="nav-item">
             <router-link 
               class="nav-link" 
-              to="/DALeng/admin">
+              to="/admin">
               Control Panel
             </router-link>
           </li>
@@ -72,7 +72,7 @@
       logout () {
         return this.$store.dispatch('logout')
           .then(() => {
-            this.$router.push('/DALeng/login');
+            this.$router.push('/login');
           })
           .catch(error => { throw error })
         }

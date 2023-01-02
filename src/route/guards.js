@@ -11,6 +11,6 @@ export const authorizeToken = (to, from, next) => {
     next();
   })
   .catch( err => { 
-    next({ path: '/DALeng/login/', query: { redirect: to.fullPath } });
+    next({ path: '/login/', query: { redirect: to.fullPath } });
   });
 }

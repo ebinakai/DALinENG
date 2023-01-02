@@ -9,7 +9,7 @@
         <div class="text-right">
           <router-link 
             class="btn btn-primary rounded-pill px-4 py-3"
-            :to="{ path: '/DALeng/edit/' + id }"
+            :to="{ path: '/edit/' + id }"
             >
             <font-awesome-icon icon="fa-solid fa-pen-to-square" />
             &nbsp;Edit
@@ -58,7 +58,7 @@
         });
       },
       goEditPage() {
-        window.location.href = "/DALeng/edit/" + this.id;
+        window.location.href = "/edit/" + this.id;
       },
     },
   };

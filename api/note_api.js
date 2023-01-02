@@ -15,7 +15,7 @@ class noteDB {
         console.log(err.stack);
         return;
       } else {
-        console.log("connect success!");
+        console.log("Successfully connected note SQL server!");
       }
     });
   }
