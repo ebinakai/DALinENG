@@ -126,7 +126,7 @@
     font-size: 21px;
   }
 
-  @media screen and (max-width: 1040px) {
+  @media screen and (max-width: 940px) {
     section {
       height: 480px;
     }

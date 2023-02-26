@@ -17,7 +17,7 @@
             <font-awesome-icon icon="fa-solid fa-trash" />
             &nbsp;DELETE
           </button>
-          <button @click="save" class="btn-save btn btn-lg btn-primary rounded-pill px-5 py-3 d-inline-block" type="submit">
+          <button @click="save" id="btn-save" class="btn-save btn btn-lg btn-primary rounded-pill px-5 py-3 d-inline-block" type="submit">
             <font-awesome-icon icon="fa-solid fa-floppy-disk" />
             &nbsp;SAVE
           </button>
@@ -70,15 +70,21 @@
       save(e=undefined, flag=true) {
         if ( e !== undefined )  e.preventDefault();
         this.content.text = $("#text")[0].value;
+        $("#btn-save").addClass("btn-flush");
+        setTimeout(() => { $("#btn-save").removeClass("btn-flush"); }, 100);
 
         // 編集データを送信
         if( this.id == -1 ) {
           this.socket.emit("CREATE_DATA", this.content, (response) => {
-            if ( response.status && flag)  this.back();
+            if ( response.status ) { 
+              if ( flag ) { this.back(); }
+              else { this.$router.push("/edit/" + response.id); }
+            };
           });
         } else {
           this.socket.emit("SET_DATA", this.content, (response) => {
             if ( response.status && flag)  this.back();
+            console.debug(response);
           });
         }
       },
@@ -138,7 +144,11 @@
   .btn-save {
     margin-left: 30px;
   }
-  @media screen and (max-width: 1040px) {
+
+  .btn-flush {
+    opacity: .5;
+  }
+  @media screen and (max-width: 940px) {
     textarea.form-control {
       height: 65vh;
     }

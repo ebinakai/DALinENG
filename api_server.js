@@ -123,8 +123,9 @@ io.on("connection", (socket) => {
 
   // 新規作成
   socket.on("CREATE_DATA", (content, callback) => {
-    note.insertData(content).then( state => {
-      callback({ status: state });
+    note.insertData(content).then( data => {
+      callback({ status: data.state, id: data.results.insertId });
+      console.log({ status: data.state, id: data.results.insertId })
       util.logThrow([content], "save");
     });
   });

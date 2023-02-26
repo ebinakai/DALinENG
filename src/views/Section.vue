@@ -83,7 +83,7 @@
     height: 100px;
   }
 
-  @media screen and (max-width: 1040px) {
+  @media screen and (max-width: 940px) {
     .btn-box {
       text-align: center;
     }

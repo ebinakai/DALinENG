@@ -52,9 +52,9 @@ class noteDB {
     return await new Promise((resolve, reject) => {
       this.conn.query(config.insertRecordSQL, [data.title, data.vol, data.text], (error, results, fields) => {
         if (!error) {
-          resolve(true);
+          resolve({state: true, results: results});
         } else {
-          resolve(false);
+          resolve({state: false, results: results});
         }
       });
     }); 

@@ -70,7 +70,7 @@
 
   @media screen and (max-width: 1700px) {
     .wrapper {
-      max-width: 1040px;
+      max-width: 940px;
       gap: 1%;
     }
 
@@ -79,7 +79,7 @@
     }
   }
 
-  @media screen and (max-width: 1040px) {
+  @media screen and (max-width: 940px) {
     .wrapper {
       max-width: 520px;
     } 
