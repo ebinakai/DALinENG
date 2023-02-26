@@ -7,9 +7,9 @@ const cors = require('cors');
 
 // データベースと接続
 const note = new noteApi;
-note.connect()
-
 const auth = new authApi;
+
+note.connect();
 auth.connect();
 
 // ログインAPIサーバー
@@ -23,11 +23,14 @@ app.use(express.json());
 
 // ログイン
 app.post('/login', (req, res) => {
+  console.log( req.body.username )
   auth.getUser( req.body.username ).then( results => {
     console.log(results);
     
     if ( !Array.isArray(results) ) {
-      const msg = "No return available value from SQL server...";
+      const msg = "No return available value from SQL server... server restarting!";
+      note.connect();
+      auth.connect();
       res.status(500).send(msg);
       console.debug(msg);
       return;
@@ -38,7 +41,6 @@ app.post('/login', (req, res) => {
       return;
     }
     
-    console.log(results);
     if ( results[0].password !== util.getHash(req.body.password) ) {
       msg = "The password is incorrect";
       console.debug(msg);

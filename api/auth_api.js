@@ -34,6 +34,7 @@ class authDB {
   // ユーザーの取得
   async getUser(username) {
     return await new Promise((resolve, reject) => {
+      console.log(username);
       this.conn.query(config.getUser, [username], (error, results, fields) => {
         resolve(results);
       });

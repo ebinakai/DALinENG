@@ -11,7 +11,7 @@
         <div class="edit-btn-box mb-5">
           <button @click="back" class="btn-cancel btn btn-lg btn-secondary rounded-pill px-5 py-3 d-inline-block">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
-            &nbsp;CANCEL
+            &nbsp;BACK
           </button>
           <button @click="trash" class="btn-save btn btn-lg btn-danger rounded-pill px-5 py-3 d-inline-block" type="submit">
             <font-awesome-icon icon="fa-solid fa-trash" />

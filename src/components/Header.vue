@@ -52,7 +52,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/">
+            <a class="nav-link" href="http://raspi.lan">
               Dash Board
             </a>
           </li>
@@ -89,6 +89,11 @@
     font-size: 34px;
     font-weight: bold;
     line-height: 60px;
+  }
+
+  #navbarNav {
+    z-index: 10;
+    background: rgba(255, 255, 255, .98);
   }
 
   a:hover {

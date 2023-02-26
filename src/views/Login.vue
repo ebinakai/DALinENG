@@ -183,9 +183,9 @@
   }
 
   @media screen and (max-width: 768px) {
-    body {
+    /* body {
       padding: 2rem 0;
-    }
+    } */
 
     .login-card {
       width: 280px;
