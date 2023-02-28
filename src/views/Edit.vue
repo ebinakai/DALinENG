@@ -63,7 +63,8 @@
         if( e.ctrlKey && e.key === "s" ) {
             this.save(undefined, false);
         }
-      })
+      });
+      $("#text").focus();
     },
     methods: {
       // 保存
@@ -71,7 +72,7 @@
         if ( e !== undefined )  e.preventDefault();
         this.content.text = $("#text")[0].value;
         $("#btn-save").addClass("btn-flush");
-        setTimeout(() => { $("#btn-save").removeClass("btn-flush"); }, 100);
+        setTimeout(() => { $("#btn-save").removeClass("btn-flush"); }, 10);
 
         // 編集データを送信
         if( this.id == -1 ) {
@@ -117,9 +118,10 @@
       },  
     },
 
-    // 文字変換
+    // 文字変換,オートセーブ
     watch: {
       text(Val, oldVal) {
+        this.save(undefined, false);
         this.text = Val.replace("--", "—");
         this.content.text = this.text;
       }

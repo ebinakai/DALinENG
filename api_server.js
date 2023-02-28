@@ -3,14 +3,18 @@ const noteApi = require("./api/note_api");
 const util = require("./api/util");
 const express = require('express');
 const cors = require('cors');
+let note, auth;
 
+const instantiation_DB = () => {
+  // データベースと接続
+  note = new noteApi;
+  auth = new authApi;
 
-// データベースと接続
-const note = new noteApi;
-const auth = new authApi;
+  note.connect();
+  auth.connect();
+}
 
-note.connect();
-auth.connect();
+instantiation_DB();
 
 // ログインAPIサーバー
 const app = express();
@@ -29,8 +33,7 @@ app.post('/login', (req, res) => {
     
     if ( !Array.isArray(results) ) {
       const msg = "No return available value from SQL server... server restarting!";
-      note.connect();
-      auth.connect();
+      instantiation_DB();
       res.status(500).send(msg);
       console.debug(msg);
       return;
