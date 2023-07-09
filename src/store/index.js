@@ -7,7 +7,7 @@ const store = new Vuex.Store({
         auth: {
             token: sessionStorage.getItem('token'),
         },
-        urlDb: "http://192.168.68.82:3001",
+        urlDb: "raspi.lan:3001",
     },
     actions,
     mutations,

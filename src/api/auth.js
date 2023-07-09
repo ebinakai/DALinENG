@@ -3,7 +3,7 @@ import axios from "axios"
 const headers = {}
 // headers["Content-type"] = "text/javascript"
 
-const baseUrl = "http://192.168.68.82:3001"
+const baseUrl = "http://raspi.lan:3001"
 
 const config = {
   method: null,
