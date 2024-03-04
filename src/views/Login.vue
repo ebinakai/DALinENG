@@ -1,7 +1,7 @@
 <template>
   <main id="loginPage">
-    <form v-on:submit.prevent="handle()">
-      <div class="login-card-container container">
+    <div class="login-card-container container-md px-4">
+      <form v-on:submit.prevent="handle()">
         <div class="login-card p-5 rounded-lg submit-animation">
   
           <div class="login-card-header text-center mb-5">
@@ -25,8 +25,8 @@
           </div>
   
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </main>
 </template>
 <script>
@@ -73,11 +73,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 180px);
+    overflow: hidden;
+  }
+
+  .login-card-container {
+    max-width: 550px;
   }
 
   .login-card {
-    width: 550px;
     background: rgba(255, 255, 255, .6);
     position: relative;
   }
@@ -127,7 +130,7 @@
     outline: none;
     width: 100%;
     background: rgba(255, 255, 255, .3);
-    transition: background .5s;
+    transition: all .5s;
   }
 
   .login-card input:focus {
@@ -135,7 +138,6 @@
   }
 
   .login-card-footer button {
-    background: rgba(255, 255, 255, .3);
     background: black;
     color: white;
     font-size: 1rem;
@@ -180,15 +182,5 @@
 
   .login-card-footer button:hover {
     color: rgba(255, 255, 255, .6);
-  }
-
-  @media screen and (max-width: 768px) {
-    /* body {
-      padding: 2rem 0;
-    } */
-
-    .login-card {
-      width: 280px;
-    }
   }
 </style>

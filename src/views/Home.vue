@@ -1,6 +1,6 @@
 <template>
   <main class="pb-5">
-    <div class="wrapper d-flex flex-wrap pt-5">
+    <div class="wrapper d-flex flex-wrap pt-1">
       <div class="card-box mb-5 p-0 fadein" v-for="vol in vols">
         <router-link 
           class="card rounded shadow-lg p-0 btn"

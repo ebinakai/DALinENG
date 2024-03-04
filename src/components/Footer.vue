@@ -18,8 +18,8 @@
   footer {
     background-color: black;
     color: white;
-    position: absolute;/* ←絶対位置 */
-    bottom: 0;
+    /* position: absolute;←絶対位置
+    bottom: 0; */
     width: 100%;
     height: 80px;
   }
