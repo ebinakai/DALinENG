@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="wrapper">
+    <div class="wrapper mb-2">
       <div class="container mb-5">
         <div class="alert alert-success" role="alert">
           Click the botton below to download all data.
