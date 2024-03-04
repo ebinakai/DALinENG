@@ -20,7 +20,8 @@
               <router-link
                 class="dropdown-item"
                 v-for="vol in vols"
-                :to="{ path: '/book/' + vol }">
+                :to="{ path: '/book/' + vol }"
+                @click.native="closeDropdown">
                 Vol.{{ vol }}
               </router-link>
             </div>
@@ -28,21 +29,24 @@
           <li class="nav-item">
             <router-link 
               class="nav-link disabled" 
-              to="/">
+              to="/"
+              @click.native="closeDropdown">
               Create new Vol
             </router-link>
           </li>
           <li class="nav-item">
             <router-link 
               class="nav-link disabled" 
-              to="/">
+              to="/"
+              @click.native="closeDropdown">
               Create new Article
             </router-link>
           </li>
           <li class="nav-item">
             <router-link 
               class="nav-link" 
-              to="/admin">
+              to="/admin"
+              @click.native="closeDropdown">
               Control Panel
             </router-link>
           </li>
@@ -70,12 +74,19 @@
     }),
     methods: {
       logout () {
+        this.closeDropdown();
         return this.$store.dispatch('logout')
           .then(() => {
             this.$router.push('/login');
           })
           .catch(error => { throw error })
+      },
+      closeDropdown() {
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        if (navbarToggler && !navbarToggler.classList.contains('collapsed')) {
+          navbarToggler.click();
         }
+      }
     }
   };
 </script>

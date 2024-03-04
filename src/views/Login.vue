@@ -1,6 +1,6 @@
 <template>
   <main id="loginPage">
-    <div class="login-card-container container-md px-4">
+    <div class="login-card-container container-md p-4">
       <form v-on:submit.prevent="handle()">
         <div class="login-card p-5 rounded-lg submit-animation">
   
