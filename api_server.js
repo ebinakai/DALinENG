@@ -3,18 +3,10 @@ const noteApi = require("./api/note_api");
 const util = require("./api/util");
 const express = require('express');
 const cors = require('cors');
-let note, auth;
 
-const instantiation_DB = () => {
-  // データベースと接続
-  note = new noteApi;
-  auth = new authApi;
-
-  note.connect();
-  auth.connect();
-}
-
-instantiation_DB();
+// データベースと接続
+let note = new noteApi;
+let auth = new authApi;
 
 // ログインAPIサーバー
 const app = express();
@@ -26,33 +18,34 @@ app.use(cors({
 app.use(express.json());
 
 // ログイン
-app.post('/login', (req, res) => {
+app.post('/login', async function(req, res) {
   console.log( req.body.username )
-  auth.getUser( req.body.username ).then( results => {
-    console.log(results);
+
+  const results = await auth.getUser(req.body.username);
+  const msg = "Login successfully";
+
+  console.log(results);
     
-    if ( !Array.isArray(results) ) {
-      const msg = "No return available value from SQL server... server restarting!";
-      instantiation_DB();
-      res.status(500).send(msg);
-      console.debug(msg);
-      return;
-    } else if ( results.length == 0 ) {
-      const msg = "No This User";
-      res.status(301).send(msg);
-      console.debug(msg);
-      return;
-    }
-    
-    if ( results[0].password !== util.getHash(req.body.password) ) {
-      msg = "The password is incorrect";
-      console.debug(msg);
-      res.status(302).send();
-      return;
-    }
-    
+  // データベースが
+  if ( !Array.isArray(results) ) {
+    msg = "No return available value from SQL server...";
+    res.status(500).send(msg);
+
+  } else if ( results.length == 0 ) {
+    msg = "No This User";
+    res.status(301).send(msg);
+
+  } else if ( results[0].password !== util.getHash(req.body.password) ) {
+    msg = "The password is incorrect";
+    res.status(302).send();
+
+  } else {
     res.status(200).send({token: util.getToken(req.body)});
-  });
+  }
+
+  // ログを表示
+  console.debug(msg);
+  return;
 });
 
 // トークン確認
@@ -71,16 +64,17 @@ app.delete('/logout', (req, res) => {
 });
 
 // 新規ユーザー登録
-app.post("/createuser", (req, res) => {  
-  auth.getUser(req.body.username).then( results => {
-    if ( results.length != 0 ) {
-      console.log("create user error...")
-      res.status(301).send("Already used this Username");
-    } else {
-      console.log("create user successfully!")
-      auth.insertUser(req.body).then( results => { res.send(results) });
-    }
-  })
+app.post("/createuser", async function(req, res) {  
+
+  const results = await auth.getUser(req.body.username);
+  
+  if ( results.length != 0 ) {
+    console.log("create user error...")
+    res.status(301).send("Already used this Username");
+  } else {
+    console.log("create user successfully!")
+    auth.insertUser(req.body).then( results => { res.send(results) });
+  }
 
 });
 
@@ -93,51 +87,46 @@ const io = require("socket.io")(server, {cors: { origins: [] }});
 // socket.io の接続
 io.on("connection", (socket) => {
   // IDで検索
-  socket.on("GET_DATA_BY_ID", (id, callback) => {
-    note.getIdData(id).then(data => {
-      callback({ DATA_BY_ID: data[0] });
-      util.logThrow(data, "sent data");
-    });
+  socket.on("GET_DATA_BY_ID", async (id, callback) => {
+    const data = await note.getIdData(id);  // データベースと通信
+    callback({ DATA_BY_ID: data[0] });
+    util.logThrow(data, "sent data");
   });
 
   // Vol.で検索
-  socket.on("GET_DATA_BY_VOL", (vol, callback) => {
-    note.getVolData(vol).then(data => {
-      callback({ DATA_BY_VOL: data });
-      util.logThrow(data, "sent data");
-    });
+  socket.on("GET_DATA_BY_VOL", async (vol, callback) => {
+    const data = await note.getVolData(vol);
+    callback({ DATA_BY_VOL: data });
+    util.logThrow(data, "sent data");
   });
 
   // データをダウンロード
-  socket.on("DOWNLOAD_ALL_DATA", (callback) => {
-    note.getAllData().then( json => {
-      callback({ json: json });
-      console.log("Download all data")
-    } )
+  socket.on("DOWNLOAD_ALL_DATA", async (callback) => {
+    const json = await note.getAllData();
+    callback({ json: json });
+    console.log("Download all data");
   });
 
   // 書き込み
-  socket.on("SET_DATA", (content, callback) => {
-    note.updateData(content).then( state => {
-      callback({ status: state });
-      util.logThrow([content], "save");
-    } )
+  socket.on("SET_DATA", async (content, callback) => {
+    const state = await note.updateData(content);
+    callback({ status: state });
+    util.logThrow([content], "save");
   });
 
   // 新規作成
-  socket.on("CREATE_DATA", (content, callback) => {
-    note.insertData(content).then( data => {
-      callback({ status: data.state, id: data.results.insertId });
-      console.log({ status: data.state, id: data.results.insertId })
-      util.logThrow([content], "save");
-    });
+  socket.on("CREATE_DATA", async (content, callback) => {
+    const data = await note.insertData(content);
+    callback({ status: data.state, id: data.results.insertId });
+    console.log({ status: data.state, id: data.results.insertId });
+    util.logThrow([content], "save");
   });
 
   // 削除
-  socket.on("DELETE_DATA_BY_ID", (id, callback) => {
-    note.deleteData(id).then(state => {
-      callback({ status: state });
-      console.log("delete id." + id);
-    });
+  socket.on("DELETE_DATA_BY_ID", async (id, callback) => {
+    const state = await note.deleteData(id);
+    callback({ status: state });
+    console.log("delete id." + id);
   });
+
 });

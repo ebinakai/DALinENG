@@ -1,4 +1,5 @@
 exports.mysql_setting = {
+    connectionLimit: 33,
     host: 'localhost',
     user: 'dev',
     password: 'sql',
