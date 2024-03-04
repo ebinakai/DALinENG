@@ -1,14 +1,11 @@
 import axios from "axios"
 
-const headers = {}
-// headers["Content-type"] = "text/javascript"
-
 const baseUrl = "http://raspi.lan:3001"
 
 const config = {
   method: null,
   url: null,
-  headers,
+  headers: {},
   data: null
 }
 

@@ -33,7 +33,7 @@ app.post('/login', async function(req, res) {
   console.log( req.body.username )
 
   const results = await auth.getUser(req.body.username);
-  const msg = "Login successfully";
+  let msg = "Login successfully";
 
   console.log(results);
     
@@ -43,12 +43,12 @@ app.post('/login', async function(req, res) {
     res.status(500).send(msg);
 
   } else if ( results.length == 0 ) {
-    msg = "No This User";
-    res.status(301).send(msg);
+    msg = "username or password is incorrect";
+    res.status(401).send(msg);
 
   } else if ( results[0].password !== util.getHash(req.body.password) ) {
-    msg = "The password is incorrect";
-    res.status(302).send();
+    msg = "username or password is incorrect";
+    res.status(401).send(msg);
 
   } else {
     res.status(200).send({token: util.getToken(req.body)});

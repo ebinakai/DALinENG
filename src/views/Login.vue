@@ -50,8 +50,9 @@
               $(".submit-animation").removeClass("active");
 
               const status = ( res.response === undefined )? undefined : res.response.status;
-              $("#LoginCardUsername").toggleClass("bg-danger", status == 301);
-              $("#LoginCardPassword").toggleClass("bg-danger", status == 302);
+              console.debug(status);
+
+              $(".login-card").toggleClass("invalid", status == 401);
 
               if ( res.status != 200 ) { return };
 
@@ -124,13 +125,17 @@
     font-size: .8rem;
   }
 
-  .login-card input[type="text"],
-  .login-card input[type="password"] {
+  .login-card input {
     border: none;
     outline: none;
+    font-weight: bold;
     width: 100%;
     background: rgba(255, 255, 255, .3);
     transition: all .5s;
+  }
+
+  .login-card input::placeholder {
+    font-weight: normal;  
   }
 
   .login-card input:focus {
@@ -183,4 +188,15 @@
   .login-card-footer button:hover {
     color: rgba(255, 255, 255, .6);
   }
+
+  .login-card.invalid input,
+  .login-card.invalid label,
+  .login-card.invalid input::placeholder {
+    color: white;
+  }
+
+  .login-card.invalid input {
+    background-color: var(--danger);
+  }
+
 </style>
