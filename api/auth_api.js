@@ -18,7 +18,6 @@ class authDB {
 
   // ユーザーの取得
   async getUser(username) {
-    console.log(username);
     const [results] = await this.pool.query(config.getUser, [username]);
     return results;
   }

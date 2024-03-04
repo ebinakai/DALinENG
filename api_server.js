@@ -2,6 +2,7 @@ const authApi = require("./api/auth_api");
 const noteApi = require("./api/note_api");
 const util = require("./api/util");
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 // データベースと接続
@@ -10,12 +11,22 @@ let auth = new authApi;
 
 // ログインAPIサーバー
 const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
+// CORSの設定
+const allowedOrigins = ["http://192.168.68.2:9999", "http://dal.raspi.lan"];
 app.use(cors({
-  origin: "*",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
-}))
-app.use(express.json());
+}));
 
 // ログイン
 app.post('/login', async function(req, res) {
