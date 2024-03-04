@@ -52,7 +52,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://raspi.lan">
+            <a class="nav-link" href="http://dashboard.raspi.lan" target="_blank">
               Dash Board
             </a>
           </li>
