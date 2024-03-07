@@ -9,7 +9,7 @@
         <div class="text-right">
           <router-link 
             class="btn btn-primary rounded-pill px-4 py-3"
-            :to="{ path: '/DALeng/edit/' + id }"
+            :to="{ path: '/edit/' + id }"
             >
             <font-awesome-icon icon="fa-solid fa-pen-to-square" />
             &nbsp;Edit
@@ -22,6 +22,7 @@
 
 <script>
   import io from "socket.io-client";
+  import store from '../store/index';
   export default {
     name: "Section",
     props: ['id'],
@@ -32,7 +33,7 @@
         id: 0, 
         vol: 0,
       },
-      socket: io("http://192.168.68.82:3001"),
+      socket: io(store.state.urlDb),
     }),
     created() {
       this.socket.emit("GET_DATA_BY_ID", this.id, (response) => {
@@ -57,7 +58,7 @@
         });
       },
       goEditPage() {
-        window.location.href = "/DALeng/edit/" + this.id;
+        window.location.href = "/edit/" + this.id;
       },
     },
   };
@@ -82,9 +83,14 @@
     height: 100px;
   }
 
-  @media screen and (max-width: 1040px) {
+  @media screen and (max-width: 940px) {
     .btn-box {
       text-align: center;
+    }
+  }
+  @media screen and (max-width: 550px) {
+    p {
+      font-size: .8rem;
     }
   }
     

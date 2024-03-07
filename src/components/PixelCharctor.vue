@@ -14,7 +14,7 @@
     }),
     mounted() {
       const index = Math.floor(Math.random() * this.charctorList.length);
-      this.path = `/DALeng/images/pixel/${this.charctorList[index]}.webp`;
+      this.path = `/images/pixel/${this.charctorList[index]}.webp`;
     },
   };
 </script>

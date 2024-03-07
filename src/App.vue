@@ -1,7 +1,9 @@
 <template>
-  <Header />
-  <router-view/>
-  <Footer />
+  <div id="wrapper" class="d-flex flex-column justify-content-start">
+    <Header />
+    <router-view/>
+    <Footer />
+  </div>
 </template>
 
 <script>
@@ -12,6 +14,6 @@
     components: {
       Header,
       Footer,
-    },
+    }
   }
 </script>

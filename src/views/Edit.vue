@@ -11,13 +11,13 @@
         <div class="edit-btn-box mb-5">
           <button @click="back" class="btn-cancel btn btn-lg btn-secondary rounded-pill px-5 py-3 d-inline-block">
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
-            &nbsp;CANCEL
+            &nbsp;BACK
           </button>
           <button @click="trash" class="btn-save btn btn-lg btn-danger rounded-pill px-5 py-3 d-inline-block" type="submit">
             <font-awesome-icon icon="fa-solid fa-trash" />
             &nbsp;DELETE
           </button>
-          <button @click="save" class="btn-save btn btn-lg btn-primary rounded-pill px-5 py-3 d-inline-block" type="submit">
+          <button @click="save" id="btn-save" class="btn-save btn btn-lg btn-primary rounded-pill px-5 py-3 d-inline-block" type="submit">
             <font-awesome-icon icon="fa-solid fa-floppy-disk" />
             &nbsp;SAVE
           </button>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-  import e from "cors";
-import io from "socket.io-client";
+  import io from "socket.io-client";
+  import store from '../store/index';
   export default {
     name: "Edit",
     props: ['id'],
@@ -41,7 +41,7 @@ import io from "socket.io-client";
         id: -1,
         vol: 0,
       },
-      socket: io("http://192.168.68.82:3001"),
+      socket: io(store.state.urlDb),
     }),
     created() {
       if ( this.id == -1 ) {
@@ -61,25 +61,31 @@ import io from "socket.io-client";
       // c-s shortcut
       window.addEventListener("keyup", e => {
         if( e.ctrlKey && e.key === "s" ) {
-            console.log(e.key)
             this.save(undefined, false);
         }
-      })
+      });
+      $("#text").focus();
     },
     methods: {
       // 保存
       save(e=undefined, flag=true) {
         if ( e !== undefined )  e.preventDefault();
         this.content.text = $("#text")[0].value;
+        $("#btn-save").addClass("btn-flush");
+        setTimeout(() => { $("#btn-save").removeClass("btn-flush"); }, 10);
 
         // 編集データを送信
         if( this.id == -1 ) {
           this.socket.emit("CREATE_DATA", this.content, (response) => {
-            if ( response.status && flag)  this.back();
+            if ( response.status ) { 
+              if ( flag ) { this.back(); }
+              else { this.$router.push("/edit/" + response.id); }
+            };
           });
         } else {
           this.socket.emit("SET_DATA", this.content, (response) => {
             if ( response.status && flag)  this.back();
+            console.debug(response);
           });
         }
       },
@@ -93,29 +99,29 @@ import io from "socket.io-client";
         // 削除するIDを送信
         this.socket.emit("DELETE_DATA_BY_ID", this.content.id, (response) => {
           if ( response.status ) {
-            window.location.href = "/DALeng/encore/" + this.content.vol;
+            window.location.href = "/book/" + this.content.vol;
           }
         });
 
       },
 
       // 前ページに戻る
-      back(e = undefined) {
+      back(e) {
         if ( e !== undefined ) {
           e.preventDefault();
         }
         if ( this.id == -1 ) {
-          console.log("/DALeng/encore/" + this.content.vol)
-          window.location.href = "/DALeng/encore/" + this.content.vol;
+          this.$router.push("/book/" + this.content.vol);
           return;
         }
-        window.location.href = "/DALeng/section/" + this.content.id;
+        this.$router.push("/section/" + this.content.id);
       },  
     },
 
-    // 文字変換
+    // 文字変換,オートセーブ
     watch: {
       text(Val, oldVal) {
+        this.save(undefined, false);
         this.text = Val.replace("--", "—");
         this.content.text = this.text;
       }
@@ -140,7 +146,11 @@ import io from "socket.io-client";
   .btn-save {
     margin-left: 30px;
   }
-  @media screen and (max-width: 1040px) {
+
+  .btn-flush {
+    opacity: .5;
+  }
+  @media screen and (max-width: 940px) {
     textarea.form-control {
       height: 65vh;
     }
