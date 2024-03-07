@@ -1,7 +1,16 @@
-# Vue 3 + Vite
+# DAL in ENG
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+英語の勉強のために、デート・ア・ライブのスピンオフ「デート・ア・ライブ・アンコール」の巻頭部分の小説を英訳していました。その英訳結果をまとめるためのホームページです。
 
-## Recommended IDE Setup
+## setup
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+NodeJSを使用するのでインストールしてください。
+
+```
+npm install
+npm run dev     # 開発環境環境での起動
+npm run build   # 本番環境用ソースコードをビルド
+```
+
+ビルドすると、`/dist`ディレクトリにソースコード群が作成されるので、各自Apacheのドキュメントルートなどに設置してください。
+
