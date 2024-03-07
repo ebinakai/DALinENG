@@ -7,7 +7,7 @@ const store = new Vuex.Store({
         auth: {
             token: localStorage.getItem('token'),
         },
-        urlDb: "raspi.lan:3001",
+        urlDb: "localhost:3001",
     },
     actions,
     mutations,

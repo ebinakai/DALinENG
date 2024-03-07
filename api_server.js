@@ -15,15 +15,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORSの設定
-const allowedOrigins = ["http://192.168.68.2:9999", "http://dal.raspi.lan"];
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: "*",
   credentials: true,
   optionsSuccessStatus: 200
 }));
@@ -83,8 +76,8 @@ app.post("/createuser", async function(req, res) {
     console.log("create user error...")
     res.status(301).send("Already used this Username");
   } else {
-    console.log("create user successfully!")
     auth.insertUser(req.body).then( results => { res.send(results) });
+    console.log("create user successfully!")
   }
 
 });

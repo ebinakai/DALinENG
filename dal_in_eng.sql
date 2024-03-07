@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- データベース: `dal_in_eng`
 --
 
+CREATE DATABASE IF NOT EXISTS dal_in_eng;
+USE dal_in_eng;
+
 -- --------------------------------------------------------
 
 --
