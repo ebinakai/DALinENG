@@ -34,7 +34,7 @@
     "require": "^0.4.4",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
-    "vue": "^3.2.37",
+    "vue": "^3.4.19",
     "vue-router": "^4.1.5",
     "vuex": "^4.1.0",
     "webpack": "^5.74.0"
