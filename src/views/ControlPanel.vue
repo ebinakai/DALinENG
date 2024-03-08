@@ -47,7 +47,7 @@
       socket: io(store.state.urlDb),
       incorrect_pass: false,
       user: {
-        token: state.state.auth.token
+        token: store.state.auth.token
       },
       create_user_res: {
         flag: false,
