@@ -2,6 +2,7 @@ const authApi = require("./api/auth_api");
 const noteApi = require("./api/note_api");
 const util = require("./api/util");
 const express = require('express');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
@@ -13,6 +14,9 @@ let auth = new authApi;
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+// Helmetを有効にしてX-Powered-Byヘッダーを無効化
+app.use(helmet.hidePoweredBy());
 
 // CORSの設定
 app.use(cors({
@@ -68,7 +72,13 @@ app.delete('/logout', (req, res) => {
 });
 
 // 新規ユーザー登録
-app.post("/createuser", async function(req, res) {  
+app.post("/createuser", async function(req, res) {
+  // CSRF対策
+  try {
+    const decoded = util.verifyToken(req.body.token);
+  } catch( err ) { 
+    return res.sendStatus(401);
+  }
 
   const results = await auth.getUser(req.body.username);
   

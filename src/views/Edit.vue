@@ -54,7 +54,7 @@
             this.content[key] = response.DATA_BY_ID[key];
           });
           this.text = this.content.text;
-          setTimeout(this.fadeIn);
+          setTimeout( () => this.fadeIn(), 10);
         });
       }
 

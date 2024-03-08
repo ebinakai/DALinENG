@@ -40,7 +40,7 @@
         Object.keys(this.content).forEach((key) => {
           this.content[key] = response.DATA_BY_ID[key];
         });
-        setTimeout(this.fadeIn);
+        setTimeout( () => this.fadeIn(), 10);
       });
     },
     mounted() {

@@ -46,7 +46,9 @@
     data: () => ({
       socket: io(store.state.urlDb),
       incorrect_pass: false,
-      user: {},
+      user: {
+        token: state.state.auth.token
+      },
       create_user_res: {
         flag: false,
         msg: ""
