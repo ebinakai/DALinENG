@@ -6,8 +6,8 @@
           <input class="form-control" type="text" name id="title" placeholder="Title" v-model="content.title">
         </div>
         <div class="form-group d-flex">
-          <textarea class="form-control py-3" name="text" id="text" rows="40" spellcheck="false" placeholder="contents..." v-model="text"></textarea>
-          <textarea class="form-control py-3 ml-2" name="text" rows="40" spellcheck="false" v-model="translatedText" disabled></textarea>
+          <textarea ref="originalText" class="form-control py-3" name="text" id="text" rows="40" spellcheck="false" placeholder="contents..." v-model="text" @scroll="syncScroll"></textarea>
+          <textarea ref="translatedText" class="form-control py-3 ml-2" name="text" rows="40" spellcheck="false" v-model="translatedText" disabled></textarea>
         </div>
         <div class="edit-btn-box mb-5">
           <button @click="back" class="btn-cancel btn btn-lg btn-secondary rounded-pill px-5 py-3 d-inline-block">
@@ -62,7 +62,6 @@
             this.content[key] = response.DATA_BY_ID[key];
           });
           this.text = this.content.text;
-          setTimeout( () => this.fadeIn(), 10);
         });
       }
 
@@ -75,6 +74,17 @@
       $("#text").focus();
     },
     methods: {
+      // スクロール同期
+      syncScroll() {
+        const originalTextElement = this.$refs.originalText;
+        const translatedTextElement = this.$refs.translatedText;
+
+        // オリジナルのテキストエリアのスクロール位置を取得
+        const scrollPercentage = originalTextElement.scrollTop / (originalTextElement.scrollHeight - originalTextElement.clientHeight);
+
+        // 翻訳されたテキストエリアのスクロール位置を同期
+        translatedTextElement.scrollTop = scrollPercentage * (translatedTextElement.scrollHeight - translatedTextElement.clientHeight);
+      },
       // 保存
       save(e=undefined, flag=true) {
         if ( e !== undefined )  e.preventDefault();
@@ -93,7 +103,6 @@
         } else {
           this.socket.emit("SET_DATA", this.content, (response) => {
             if ( response.status && flag)  this.back();
-            console.debug(response);
           });
         }
       },
@@ -110,7 +119,6 @@
             window.location.href = "/book/" + this.content.vol;
           }
         });
-
       },
 
       // 前ページに戻る
@@ -145,9 +153,9 @@
         let blockStartIndex = 0;
 
         for (let index = 0; index < this.newLines.length; index++) {
+        // this.newLines.forEach(async (line, index) => {
           const newLine = this.newLines[index];
-          const oldLine = this.oldLines[index] || '';
-
+          const oldLine = this.oldLines[index];
           if (newLine !== oldLine) {
             // 変更があった場合、現在のブロックに行を追加
             if (currentBlock.length === 0) {
@@ -155,7 +163,7 @@
             }
             currentBlock.push(newLine);
           } else { 
-            this.translatedLines[index] = oldTranslatedLines[index];
+            this.translatedLines[index] = oldTranslatedLines[index] || '';
 
             if (currentBlock.length > 0) {
               // 変更が連続していない場合、現在のブロックを翻訳
