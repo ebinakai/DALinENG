@@ -7,7 +7,7 @@ const store = new Vuex.Store({
         auth: {
             token: localStorage.getItem('token'),
         },
-        urlDb: "localhost:3001",
+        urlDb: import.meta.env.VITE_BACKEND_URL,
     },
     actions,
     mutations,

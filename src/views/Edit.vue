@@ -1,12 +1,13 @@
 <template>
   <main>
-    <div class="wrapper">
+    <div class="wrapper-edit">
       <form>
         <div class="form-group">
           <input class="form-control" type="text" name id="title" placeholder="Title" v-model="content.title">
         </div>
-        <div class="form-group">
+        <div class="form-group d-flex">
           <textarea class="form-control py-3" name="text" id="text" rows="40" spellcheck="false" placeholder="contents..." v-model="text"></textarea>
+          <textarea class="form-control py-3 ml-2" name="text" rows="40" spellcheck="false" v-model="translatedText" disabled></textarea>
         </div>
         <div class="edit-btn-box mb-5">
           <button @click="back" class="btn-cancel btn btn-lg btn-secondary rounded-pill px-5 py-3 d-inline-block">
@@ -30,6 +31,8 @@
 <script>
   import io from "socket.io-client";
   import store from '../store/index';
+  import deepl from '../api/deepl';
+
   export default {
     name: "Edit",
     props: ['id'],
@@ -41,6 +44,11 @@
         id: -1,
         vol: 0,
       },
+      oldLines: [],
+      newLines: [],
+      debouncedTimeout: null,
+      translatedLines: [],
+      translatedText: '',
       socket: io(store.state.urlDb),
     }),
     created() {
@@ -116,13 +124,81 @@
         }
         this.$router.push("/section/" + this.content.id);
       },  
+
+      // イベントが発生してから指定した時間が経過するまで処理を遅延させ、その間に再度イベントが発生した場合はタイマーをリセット
+      debounce(func, wait) {
+        return (...args) => {
+          clearTimeout(this.debouncedTimeout);
+          this.debouncedTimeout = setTimeout(() => func.apply(this, args), wait);
+        };
+      },
+
+      // 変更箇所の検知
+      async handleChangedLines() {
+        this.newLines = this.text.split("\n");
+
+        // translatedLinesを新しい行の数だけで初期化し、空文字列で埋める
+        const oldTranslatedLines = this.translatedLines.slice();
+        this.translatedLines = new Array(this.newLines.length).fill('');
+
+        let currentBlock = [];
+        let blockStartIndex = 0;
+
+        for (let index = 0; index < this.newLines.length; index++) {
+          const newLine = this.newLines[index];
+          const oldLine = this.oldLines[index] || '';
+
+          if (newLine !== oldLine) {
+            // 変更があった場合、現在のブロックに行を追加
+            if (currentBlock.length === 0) {
+              blockStartIndex = index;
+            }
+            currentBlock.push(newLine);
+          } else { 
+            this.translatedLines[index] = oldTranslatedLines[index];
+
+            if (currentBlock.length > 0) {
+              // 変更が連続していない場合、現在のブロックを翻訳
+              const textToTranslate = currentBlock.join('\n');
+              const response = await deepl.translate(textToTranslate);
+
+              // 翻訳結果を適切な位置に挿入
+              response.data.translations[0].text.split('\n').forEach((translatedLine, idx) => {
+                this.translatedLines[blockStartIndex + idx] = translatedLine;
+              });
+              currentBlock = [];
+            }
+          }
+          this.translatedText = this.translatedLines.join('\n');
+        }
+
+        if (currentBlock.length > 0) {
+          // 最後のブロックを処理
+          const textToTranslate = currentBlock.join('\n');
+          const response = await deepl.translate(textToTranslate);
+          
+          // 翻訳結果を適切な位置に挿入
+          response.data.translations[0].text.split('\n').forEach((translatedLine, idx) => {
+            this.translatedLines[blockStartIndex + idx] = translatedLine;
+          });
+          this.translatedText = this.translatedLines.join('\n');
+        }
+
+        this.oldLines = this.newLines.slice(); // 参照ではなく値をコピーする
+      },
     },
 
-    // 文字変換,オートセーブ
     watch: {
-      text(Val, oldVal) {
-        this.save(undefined, false);
-        this.text = Val.replace("--", "—");
+      // テキスト変更時の処理をデバウンスする
+      text: function(newVal, oldVal) {
+        const debouncedTextChange = this.debounce(() => {
+          // 文字変換,オートセーブ
+          this.handleChangedLines();
+          this.save(undefined, false);
+        }, 3000);
+        debouncedTextChange();
+        
+        this.text = newVal.replace("--", "—");
         this.content.text = this.text;
       }
     }
@@ -130,6 +206,10 @@
 </script>
 
 <style>
+  .wrapper-edit {
+    /* margin: 0 20px; */
+    padding: 0 20px;
+  }
   #title {
     font-size: 40px;
   }
