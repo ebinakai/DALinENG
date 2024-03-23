@@ -1,6 +1,5 @@
 import axios from "axios"
-
-const baseUrl =  import.meta.env.VITE_BACKEND_URL
+import { baseUrl } from "../config"
 
 const config = {
   method: null,

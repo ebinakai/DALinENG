@@ -73,7 +73,7 @@
         response.DATA_BY_VOL.forEach(content => {
           this.contents.push(content);
         });
-        setTimeout(this.fadeIn);
+        setTimeout( () => this.fadeIn(), 10);
       }
     },
     watch: {
