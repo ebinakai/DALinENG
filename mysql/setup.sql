@@ -34,7 +34,9 @@ CREATE TABLE `article` (
   `id` int(11) NOT NULL,
   `title` varchar(100) DEFAULT 'no-title',
   `vol` int(11) NOT NULL,
-  `text` mediumtext DEFAULT NULL
+  `text` mediumtext DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -46,7 +48,8 @@ CREATE TABLE `article` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(40) NOT NULL,
-  `password` varchar(200) DEFAULT NULL
+  `password` varchar(200) DEFAULT NULL,
+  `role` varchar(10) NOT NULL DEFAULT 'user' COMMENT '''user'', ''admin'', ''developer'''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

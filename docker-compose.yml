@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        VITE_DASHBOARD_URL: ${VITE_DASHBOARD_URL}
+        VITE_DEEPL_APIKEY: ${VITE_DEEPL_APIKEY}
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+    ports:
+      - "3080:80"
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        DB_HOST: ${DB_HOST}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_NAME: ${DB_NAME}
+        SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+
+  db:
+    image: mysql:8.0
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+
+volumes:
+  mysql-data:

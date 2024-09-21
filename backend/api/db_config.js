@@ -1,5 +1,3 @@
-require("dotenv").config()
-
 exports.mysql_setting = {
     connectionLimit: 3,
     host: process.env.DB_HOST,
