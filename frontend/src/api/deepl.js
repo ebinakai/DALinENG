@@ -1,9 +1,13 @@
-import translate from 'deepl'
-const auth_key = import.meta.env.VITE_DEEPL_APIKEY
+import axios from "axios"
+import { baseUrl, request_config } from "../config"
+
 
 export default {
-  translate: async (text) => {
-    const res = await translate({free_api:true, text: text, target_lang:"JA", auth_key:auth_key})
-    return res;
-  },
+  translate: async (data) => {
+    request_config.method = "post";
+    request_config.data = data;
+    request_config.url = baseUrl + "/translate";
+
+    return await axios.request(request_config)
+  }
 }

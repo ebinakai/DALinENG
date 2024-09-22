@@ -3,6 +3,7 @@ const noteApi = require("./api/note_api");
 const util = require("./api/util");
 const express = require('express');
 const helmet = require('helmet');
+const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
@@ -19,15 +20,16 @@ app.use(cookieParser());
 app.use(helmet.hidePoweredBy());
 
 // CORSの設定
+const frontend_url = process.env.FRONTEND_URL;
 app.use(cors({
-  origin: "*",
+  origin: frontend_url,
   credentials: true,
   optionsSuccessStatus: 200
 }));
 
 // ログイン
 app.post('/login', async function(req, res) {
-  console.log( req.body.username )
+  console.log( "login with the user", req.body.username )
 
   const results = await auth.getUser(req.body.username);
   let msg = "Login successfully";
@@ -87,11 +89,40 @@ app.post("/createuser", async function(req, res) {
     auth.insertUser(req.body).then( results => { res.send(results) });
     console.log("create user successfully!")
   }
+});
 
+// deepl-API プロキシ
+const deepl_apikey = process.env.DEEPL_APIKEY;
+app.post("/translate", async function(req, res) {
+  // CSRF対策
+  try {
+    const decoded = util.verifyToken(req.body.token);
+  } catch( err ) { 
+    return res.sendStatus(401);
+  }
+
+  const url = 'https://api-free.deepl.com/v2/translate';
+
+  try {
+    const response = await axios.post(url, {
+      text: [req.body.text],
+      target_lang: req.body.targetLang,
+    }, {
+      headers: {
+        'Authorization': `DeepL-Auth-Key ${deepl_apikey}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    res.send(response.data.translations[0].text) // 翻訳結果を返す
+  } catch (error) {
+    console.error('error on translate api')
+    const msg = error.response ? error.response.data : error.message
+    res.status(301).send(msg);
+  }
 });
 
 // express 起動
-const server = app.listen(3001, () => console.log('server running on port 3001'));
+const server = app.listen(80, () => console.log('server running on port 80'));
 
 // socket.io の設定
 const io = require("socket.io")(server, {cors: { origins: [] }});

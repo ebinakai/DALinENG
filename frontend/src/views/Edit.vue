@@ -49,6 +49,7 @@
       debouncedTimeout: null,
       translatedLines: [],
       translatedText: '',
+      token: store.state.auth.token,
       socket: io(store.state.urlDb),
     }),
     created() {
@@ -153,7 +154,6 @@
         let blockStartIndex = 0;
 
         for (let index = 0; index < this.newLines.length; index++) {
-        // this.newLines.forEach(async (line, index) => {
           const newLine = this.newLines[index];
           const oldLine = this.oldLines[index];
           if (newLine !== oldLine) {
@@ -168,12 +168,18 @@
             if (currentBlock.length > 0) {
               // 変更が連続していない場合、現在のブロックを翻訳
               const textToTranslate = currentBlock.join('\n');
-              const response = await deepl.translate(textToTranslate);
 
-              // 翻訳結果を適切な位置に挿入
-              response.data.translations[0].text.split('\n').forEach((translatedLine, idx) => {
-                this.translatedLines[blockStartIndex + idx] = translatedLine;
-              });
+              try {
+                const response = await deepl.translate({token: this.token, text: textToTranslate, targetLang: 'JA'});
+                console.log(response); // 翻訳結果を表示
+
+                // 翻訳結果を適切な位置に挿入
+                response.data.split('\n').forEach((translatedLine, idx) => {
+                  this.translatedLines[blockStartIndex + idx] = translatedLine;
+                });
+              } catch (error) {
+                console.error('Translation failed:', error.message);
+              }
               currentBlock = [];
             }
           }
@@ -183,12 +189,17 @@
         if (currentBlock.length > 0) {
           // 最後のブロックを処理
           const textToTranslate = currentBlock.join('\n');
-          const response = await deepl.translate(textToTranslate);
-          
-          // 翻訳結果を適切な位置に挿入
-          response.data.translations[0].text.split('\n').forEach((translatedLine, idx) => {
-            this.translatedLines[blockStartIndex + idx] = translatedLine;
-          });
+          try {
+            const response = await deepl.translate({token: this.token, text: textToTranslate, targetLang: 'JA'});
+            console.log(response); // 翻訳結果を表示
+
+            // 翻訳結果を適切な位置に挿入
+            response.data.split('\n').forEach((translatedLine, idx) => {
+              this.translatedLines[blockStartIndex + idx] = translatedLine;
+            });
+          } catch (error) {
+            console.error('Translation failed:', error.message);
+          }
           this.translatedText = this.translatedLines.join('\n');
         }
 
