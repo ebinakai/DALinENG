@@ -57,7 +57,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://dashboard.raspi.lan" target="_blank">
+            <a class="nav-link" :href="dashboardUrl" target="_blank">
               Dash Board
             </a>
           </li>
@@ -68,10 +68,12 @@
 </template>
 
 <script>
+  import { dashboardUrl } from "../config"
   export default {
     name: "Header",
     data: () => ({
       vols: 11,
+      dashboardUrl,
     }),
     methods: {
       logout () {

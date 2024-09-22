@@ -31,8 +31,6 @@ app.post('/login', async function(req, res) {
 
   const results = await auth.getUser(req.body.username);
   let msg = "Login successfully";
-
-  console.log(results);
     
   // データベースが
   if ( !Array.isArray(results) ) {
