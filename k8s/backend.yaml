@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datealive-backend
+  labels:
+    app: datealive-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datealive-backend
+  template:
+    metadata:
+      labels:
+        app: datealive-backend
+    spec:
+      containers:
+      - name: backend
+        image: registry.kb/datealive/backend:1.0.4
+        env:
+        - name: DB_HOST
+          value: "mysql-db"
+        - name: DEBUG
+          value: "socket.io:*"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: datealive-db-secret
+              key: username
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: datealive-db-secret
+              key: password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: datealive-db-secret
+              key: database
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: datealive-app-secret
+              key: jwt-secret
+        - name: DEEPL_APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: datealive-app-secret
+              key: deepl-apikey
+        - name: FRONTEND_URL
+          value: "https://datealive.kb"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datealive-backend-srv
+spec:
+  selector:
+    app: datealive-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: datealive-backend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - datealive.kb
+      secretName: datealive-tls
+  rules:
+    - host: datealive.kb
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: datealive-backend-srv
+                port:
+                  number: 80

@@ -16,11 +16,21 @@ Docker-Composeを使用するのでインストールしてください。
 環境変数を設定したあとに `docker-compose` を使用してビルドしてください。
 
 ```[bash]
-cp .env.example .env
-nano .env
-
 # ビルド
-docker-compose up 
+docker build -t datealive/frontend:1.0.5 ./frontend --build-arg VITE_BACKEND_URL=/api
+docker build ./backend -t datealive/backend:1.0.4
+
+# タグ
+docker tag datealive/frontend:1.0.5 registry.kb/datealive/frontend:1.0.5
+docker tag datealive/backend:1.0.4 registry.kb/datealive/backend:1.0.4
+
+# プッシュ
+docker push registry.kb/datealive/frontend:1.0.5
+docker push registry.kb/datealive/backend:1.0.4
+
+# デプロイ
+kubectl apply -f k8s/frontend.yaml
+kubectl apply -f k8s/backend.yaml
 ```
 
 ### ユーザーの追加
@@ -28,6 +38,8 @@ docker-compose up
 また、新規ユーザを手動で設定します。パスワードはハッシュとして保存するので、コマンドを実行して生成します。
 
 ```bash
+ここをnodeを使用してマウントとrunコマンドでの実行方法に変更
+docker run --rm -it datealive/backend:1.0.0 /bin/bash
 docker-compose exec backend /bin/bash
 
 $ node api/password_generator.js password_here

@@ -8,7 +8,7 @@ const store = new Vuex.Store({
         auth: {
             token: localStorage.getItem('token'),
         },
-        urlDb: baseUrl,
+        io_options: { path: baseUrl + '/socket.io' },
     },
     actions,
     mutations,

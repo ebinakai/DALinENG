@@ -125,7 +125,12 @@ app.post("/translate", async function(req, res) {
 const server = app.listen(80, () => console.log('server running on port 80'));
 
 // socket.io の設定
-const io = require("socket.io")(server, {cors: { origins: [] }});
+const io = require("socket.io")(server, {
+  cors: {
+    origin: frontend_url,
+    methods: ["GET", "POST"]
+  }
+});
 
 // socket.io の接続
 io.on("connection", (socket) => {

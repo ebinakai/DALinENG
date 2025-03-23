@@ -44,7 +44,7 @@
   export default {
     name: "ControlPanel",
     data: () => ({
-      socket: io(store.state.urlDb),
+      socket: io(store.state.urlDb, store.state.io_options),
       incorrect_pass: false,
       user: {
         token: store.state.auth.token

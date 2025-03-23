@@ -50,7 +50,7 @@
       translatedLines: [],
       translatedText: '',
       token: store.state.auth.token,
-      socket: io(store.state.urlDb),
+      socket: io(store.state.urlDb, store.state.io_options),
     }),
     created() {
       if ( this.id == -1 ) {

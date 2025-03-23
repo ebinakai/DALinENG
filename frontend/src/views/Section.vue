@@ -33,7 +33,7 @@
         id: 0, 
         vol: 0,
       },
-      socket: io(store.state.urlDb),
+      socket: io(store.state.urlDb, store.state.io_options),
     }),
     created() {
       this.socket.emit("GET_DATA_BY_ID", this.id, (response) => {

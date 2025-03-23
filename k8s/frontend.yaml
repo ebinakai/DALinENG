@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datealive-frontend
+  labels:
+    app: datealive-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datealive-frontend
+  template:
+    metadata:
+      labels:
+        app: datealive-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: registry.kb/datealive/frontend:1.0.5
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datealive-frontend-srv
+spec:
+  selector:
+    app: datealive-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: datealive-frontend-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - datealive.kb
+    secretName: datealive-tls
+  rules:
+  - host: datealive.kb
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: datealive-frontend-srv
+              port:
+                number: 80
