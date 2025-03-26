@@ -20,8 +20,6 @@ spec:
         env:
         - name: DB_HOST
           value: "mysql-db"
-        - name: DEBUG
-          value: "socket.io:*"
         - name: DB_USER
           valueFrom:
             secretKeyRef:

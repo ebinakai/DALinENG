@@ -11,18 +11,12 @@ https://github.com/EbinaKai/DALinENG/assets/85666313/81346993-a377-44a7-9246-603
 
 Docker-Composeを使用するのでインストールしてください。
 
-### ビルド
-
-環境変数を設定したあとに `docker-compose` を使用してビルドしてください。
+### デプロイ
 
 ```[bash]
 # ビルド
-docker build -t datealive/frontend:1.0.5 ./frontend --build-arg VITE_BACKEND_URL=/api
-docker build ./backend -t datealive/backend:1.0.4
-
-# タグ
-docker tag datealive/frontend:1.0.5 registry.kb/datealive/frontend:1.0.5
-docker tag datealive/backend:1.0.4 registry.kb/datealive/backend:1.0.4
+docker build -t registry.kb/datealive/frontend:1.0.5 ./frontend --build-arg VITE_BACKEND_URL=/api
+docker build ./backend -t registry.kb/datealive/backend:1.0.4
 
 # プッシュ
 docker push registry.kb/datealive/frontend:1.0.5
