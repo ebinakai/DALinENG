@@ -1,18 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: datealive-frontend
+  name: frontend
+  namespace: datealive
   labels:
-    app: datealive-frontend
+    app: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: datealive-frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: datealive-frontend
+        app: frontend
     spec:
       containers:
       - name: frontend
@@ -28,10 +29,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: datealive-frontend-srv
+  name: frontend-svc
+  namespace: datealive
 spec:
   selector:
-    app: datealive-frontend
+    app: frontend
   ports:
   - protocol: TCP
     port: 80
@@ -41,7 +43,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: datealive-frontend-ingress
+  name: frontend-ingress
+  namespace: datealive
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -58,6 +61,6 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: datealive-frontend-srv
+              name: frontend-svc
               port:
                 number: 80

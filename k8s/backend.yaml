@@ -1,25 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: datealive-backend
+  name: backend
+  namespace: datealive
   labels:
-    app: datealive-backend
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: datealive-backend
+      app: backend
   template:
     metadata:
       labels:
-        app: datealive-backend
+        app: backend
     spec:
       containers:
       - name: backend
         image: registry.kb/datealive/backend:1.0.4
         env:
         - name: DB_HOST
-          value: "mysql-db"
+          value: mysql-db.default
         - name: DB_USER
           valueFrom:
             secretKeyRef:
@@ -58,10 +59,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: datealive-backend-srv
+  name: backend-svc
+  namespace: datealive
 spec:
   selector:
-    app: datealive-backend
+    app: backend
   ports:
   - protocol: TCP
     port: 80
@@ -70,7 +72,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: datealive-backend-ingress
+  name: backend-ingress
+  namespace: datealive
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
@@ -87,6 +90,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: datealive-backend-srv
+                name: backend-svc
                 port:
                   number: 80
