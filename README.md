@@ -23,8 +23,7 @@ docker push registry.kb/datealive/frontend:1.0.5
 docker push registry.kb/datealive/backend:1.0.4
 
 # デプロイ
-kubectl apply -f k8s/frontend.yaml
-kubectl apply -f k8s/backend.yaml
+kubectl apply -k ./k8s
 ```
 
 ### ユーザーの追加
@@ -32,7 +31,7 @@ kubectl apply -f k8s/backend.yaml
 また、新規ユーザを手動で設定します。パスワードはハッシュとして保存するので、コマンドを実行して生成します。
 
 ```bash
-ここをnodeを使用してマウントとrunコマンドでの実行方法に変更
+# ここをnodeを使用してマウントとrunコマンドでの実行方法に変更
 docker run --rm -it datealive/backend:1.0.0 /bin/bash
 docker-compose exec backend /bin/bash
 
